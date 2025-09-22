@@ -67,6 +67,10 @@ return [
         'extension' => 'webp',
         'mime-type' => 'image/webp',
     ],
+    'formatter-smoothing' => [
+        'enabled' => false,
+        'quality' => 'high',
+    ],
     'format-queue' => 'default',
     'extensions' => [
         'image' => [
@@ -459,7 +463,7 @@ php artisan media:generate-format {--attachment-id=} {--format=} {--force}
 
 If you do not pass an `attachment-id`, the formats will be generated for all attachments.
 If you do not pass a `format`, all formats will be generated for the attachments.
-With `force` you can force the generation of the formats, even if they already exist. 
+With `force` you can force the generation of the formats, even if they already exist.
 
 > [!WARNING]
 > Using force will also overwrite cropped images!
