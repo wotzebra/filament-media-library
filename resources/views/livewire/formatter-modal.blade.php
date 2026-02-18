@@ -52,11 +52,8 @@
                         format: this.currentFormat,
                         data: window.cropper.getData(),
                         crop: window.cropper
-                            .getCroppedCanvas({
-                                width: this.currentFormat.width,
-                                height: this.currentFormat.height,
-                            })
-                            .toDataURL('{{ $forcedMimeType ?? "image/webp" }}'),
+                            .getCroppedCanvas()
+                            .toDataURL('image/png'),
                     })
                 },
                 setFormat (key) {
