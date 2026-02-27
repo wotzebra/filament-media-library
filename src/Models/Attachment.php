@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Storage;
 use Spatie\Translatable\HasTranslations;
 use Wotz\MediaLibrary\Database\Factories\AttachmentFactory;
 use Wotz\MediaLibrary\Models\Traits\HasFormats;
+use Wotz\MediaLibrary\Models\Traits\HasVersions;
 
 /**
  * @property string $name
@@ -35,6 +36,7 @@ class Attachment extends Model
     use HasFormats;
     use HasTranslations;
     use HasUuids;
+    use HasVersions;
 
     protected $keyType = 'string';
 
@@ -48,6 +50,7 @@ class Attachment extends Model
         'height',
         'disk',
         'name',
+        'version',
         'translated_name',
         'alt',
         'caption',

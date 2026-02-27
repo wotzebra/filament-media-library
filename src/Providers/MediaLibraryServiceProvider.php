@@ -44,6 +44,7 @@ class MediaLibraryServiceProvider extends PackageServiceProvider
                 '2022_08_03_120357_create_attachment_attachment_tags_table',
                 '2023_04_27_120359_create_attachment_formats',
                 '2025_01_30_130345_add_is_hidden_to_attachment_tags',
+                '2026_02_27_000001_add_versioning_to_attachments',
             ])
             ->runsMigrations()
             ->hasViews($this->packageName())

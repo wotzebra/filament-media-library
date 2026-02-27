@@ -32,6 +32,12 @@
 - [UploadedFile Mixin]('#uploaded-file-mixin)
     * [Save Attachment]('#save-attachment)
     * [Create from URL]('#create-from-url)
+- [Versioning](#versioning)
+    * [Configuration](#versioning-configuration)
+    * [Replace a file](#replace-a-file)
+    * [Revert to a previous version](#revert-to-a-previous-version)
+    * [Events](#versioning-events)
+    * [Custom resource pages](#versioning-in-custom-resource-pages)
 
 ## Installation
 
@@ -447,6 +453,151 @@ To convert an url to an attachment, you simply call the `createFromUrl()` method
 $uploadedFile = \Illuminate\Http\UploadedFile::createFromUrl('https://example.com/image.jpg');
 
 $attachment = $uploadedFile->save();
+```
+
+## Versioning
+
+The package supports file versioning out of the box. When a file is replaced, the previous version is archived and can be restored at any time.
+
+### Versioning Configuration
+
+The versioning behaviour can be configured in `config/filament-media-library.php`:
+
+```php
+'versioning' => [
+    'keep_versions' => 5, // Number of previous versions to keep per attachment
+],
+```
+
+Old versions beyond the `keep_versions` limit are automatically pruned (both the database record and the stored files).
+
+### Replace a file
+
+The `Attachment` model uses the `HasVersions` trait, which provides a `replaceFile` method:
+
+```php
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use Wotz\MediaLibrary\Models\Attachment;
+
+/** @var TemporaryUploadedFile $file */
+Attachment::find($id)->replaceFile($file);
+```
+
+Calling `replaceFile` will:
+1. Archive the current file and its metadata as a new `AttachmentVersion` snapshot.
+2. Move the existing files to a versioned subdirectory (`attachments/{id}/versions/{version_number}`).
+3. Store the new file, increment the `version` counter, and regenerate all image formats.
+4. Fire an `AttachmentReplaced` event.
+
+In the Filament admin panel, the **Replace file** button is available on the attachment edit page.
+
+### Revert to a previous version
+
+```php
+use Wotz\MediaLibrary\Models\Attachment;
+use Wotz\MediaLibrary\Models\AttachmentVersion;
+
+$attachment = Attachment::find($id);
+
+/** @var AttachmentVersion $version */
+$version = $attachment->versions->first();
+
+$attachment->revertToVersion($version);
+```
+
+Calling `revertToVersion` will:
+1. Archive the current state as a new version snapshot.
+2. Restore the files from the selected version directory.
+3. Restore the format data that was saved with that version.
+4. Delete the reverted version record and prune old versions.
+5. Fire an `AttachmentReverted` event.
+
+In the Filament admin panel, the **Version history** dropdown on the attachment edit page lists all available previous versions. Each entry shows the filename and the date/time it was replaced.
+
+### Listing versions
+
+```php
+$attachment->versions; // Collection of AttachmentVersion, ordered by version_number descending
+```
+
+Each `AttachmentVersion` has the following attributes:
+
+| Attribute | Description |
+|---|---|
+| `version_number` | The version counter at the time of archiving |
+| `name` | File name (without extension) |
+| `extension` | File extension |
+| `mime_type` | MIME type |
+| `size` | File size in bytes |
+| `width` / `height` | Image dimensions (nullable) |
+| `disk` | Storage disk |
+| `format_data` | Serialised format crop data |
+| `replaced_by_user_id` | ID of the user who replaced the file (nullable) |
+| `replaced_at` | Timestamp when the file was replaced |
+
+### Versioning Events
+
+Two events are dispatched during versioning:
+
+#### `AttachmentReplaced`
+
+Fired after a file has been successfully replaced.
+
+```php
+use Wotz\MediaLibrary\Events\AttachmentReplaced;
+
+Event::listen(AttachmentReplaced::class, function (AttachmentReplaced $event) {
+    $event->attachment;       // The updated Attachment model
+    $event->previousVersion;  // The AttachmentVersion snapshot that was created
+});
+```
+
+#### `AttachmentReverted`
+
+Fired after an attachment has been reverted to a previous version.
+
+```php
+use Wotz\MediaLibrary\Events\AttachmentReverted;
+
+Event::listen(AttachmentReverted::class, function (AttachmentReverted $event) {
+    $event->attachment; // The updated Attachment model
+    $event->version;    // The AttachmentVersion that was restored
+});
+```
+
+### Versioning in custom resource pages
+
+If you create a custom Filament resource page for attachments, you can add the versioning actions by using the `HasVersionHistory` concern:
+
+```php
+use Filament\Resources\Pages\EditRecord;
+use Wotz\MediaLibrary\Resources\Concerns\HasVersionHistory;
+
+class EditMyAttachment extends EditRecord
+{
+    use HasVersionHistory;
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            $this->getReplaceFileAction(),
+            $this->getVersionHistoryAction(),
+        ];
+    }
+}
+```
+
+You can also use the actions independently:
+
+```php
+use Wotz\MediaLibrary\Filament\Actions\ReplaceAttachmentAction;
+use Wotz\MediaLibrary\Filament\Actions\VersionHistoryAction;
+
+// A standalone action for the page header
+ReplaceAttachmentAction::make('replaceFile');
+
+// An action group listing all previous versions
+VersionHistoryAction::make($this->getRecord());
 ```
 
 ## Generate new media format
