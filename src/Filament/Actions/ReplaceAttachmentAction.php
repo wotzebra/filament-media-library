@@ -7,6 +7,7 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Notifications\Notification;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use Wotz\MediaLibrary\Models\Attachment;
 
 class ReplaceAttachmentAction extends Action
 {
@@ -30,7 +31,13 @@ class ReplaceAttachmentAction extends Action
                     return;
                 }
 
-                $this->getRecord()->replaceFile($file);
+                $record = $this->getRecord();
+
+                if (! $record instanceof Attachment) {
+                    return;
+                }
+
+                $record->replaceFile($file);
 
                 Notification::make()
                     ->title(__('filament-media-library::versioning.file_replaced'))

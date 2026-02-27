@@ -110,7 +110,9 @@ trait HasVersions
 
         $storage = $this->getStorage();
 
-        $this->versions()->skip($keep)->get()->each(function (AttachmentVersion $version) use ($storage): void {
+        $keepIds = $this->versions()->limit($keep)->pluck('id');
+
+        $this->versions()->whereNotIn('id', $keepIds)->get()->each(function (AttachmentVersion $version) use ($storage): void {
             $directory = $this->getVersionDirectory($version->version_number);
 
             if ($storage->directoryExists($directory)) {
