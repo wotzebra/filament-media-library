@@ -43,7 +43,8 @@ trait HasVersions
             'name' => Str::of($file->getClientOriginalName())
                 ->replace('.' . $extension, '')
                 ->slug(),
-            'version' => $this->version + 1,
+
+            'version' => ($this->version ?? 1) + 1,
         ])->save();
 
         $file->storeAs($this->directory, $this->filename, ['disk' => $disk]);
@@ -93,7 +94,7 @@ trait HasVersions
             'width' => $version->width,
             'height' => $version->height,
             'disk' => $version->disk,
-            'version' => $this->version + 1,
+            'version' => ($this->version ?? 1) + 1,
         ])->save();
 
         $version->delete();
@@ -129,7 +130,7 @@ trait HasVersions
     {
         return AttachmentVersion::create([
             'attachment_id' => $this->getKey(),
-            'version_number' => $this->version,
+            'version_number' => $this->version ?? 1,
             'name' => $this->name,
             'extension' => $this->extension,
             'mime_type' => $this->mime_type,
@@ -151,7 +152,7 @@ trait HasVersions
     protected function archiveCurrentFiles(): void
     {
         $storage = $this->getStorage();
-        $versionDirectory = $this->getVersionDirectory($this->version);
+        $versionDirectory = $this->getVersionDirectory($this->version ?? 1);
 
         $storage->makeDirectory($versionDirectory);
 
