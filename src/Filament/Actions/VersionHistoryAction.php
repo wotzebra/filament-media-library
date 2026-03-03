@@ -47,6 +47,7 @@ class VersionHistoryAction
         return ActionGroup::make($actions)
             ->label(__('filament-media-library::versioning.version_history'))
             ->icon('heroicon-o-clock')
+            ->button()
             ->badge($versions->count());
     }
 }
