@@ -1,21 +1,20 @@
 <?php
 
-namespace Codedor\MediaLibrary\Filament;
+namespace Wotz\MediaLibrary\Filament;
 
 use Closure;
-use Codedor\MediaLibrary\Facades\Formats;
-use Codedor\MediaLibrary\Filament\Actions\Forms\UploadAttachmentAction;
-use Codedor\MediaLibrary\Formats\Format;
-use Codedor\MediaLibrary\Models\Attachment;
-use Codedor\MediaLibrary\Models\AttachmentTag;
-use Codedor\MediaLibrary\Resources\AttachmentResource;
-use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Field;
 use Filament\Forms\Set;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Livewire\Component;
+use Wotz\MediaLibrary\Facades\Formats;
+use Wotz\MediaLibrary\Filament\Actions\Forms\UploadAttachmentAction;
+use Wotz\MediaLibrary\Formats\Format;
+use Wotz\MediaLibrary\Models\Attachment;
+use Wotz\MediaLibrary\Models\AttachmentTag;
+use Wotz\MediaLibrary\Resources\AttachmentResource;
 
 class AttachmentInput extends Field
 {
@@ -68,13 +67,13 @@ class AttachmentInput extends Field
         });
 
         $this->registerActions([
-            Action::make('remove-attachment')
+            \Filament\Actions\Action::make('remove-attachment')
                 ->closeModalByClickingAway(false)
                 ->icon('heroicon-o-x-circle')
                 ->iconButton()
                 ->color('danger')
                 ->size('sm')
-                ->action(function (Set $set, array $arguments, $state) {
+                ->action(function (\Filament\Schemas\Components\Utilities\Set $set, array $arguments, $state) {
                     if ($this->isMultiple()) {
                         $state = collect($state)
                             ->reject(fn ($id) => $id === $arguments['attachmentId'])
@@ -86,7 +85,7 @@ class AttachmentInput extends Field
                     }
                 }),
 
-            Action::make('format-attachment')
+            \Filament\Actions\Action::make('format-attachment')
                 ->closeModalByClickingAway(false)
                 ->icon('heroicon-o-scissors')
                 ->iconButton()
@@ -106,7 +105,7 @@ class AttachmentInput extends Field
                     );
                 }),
 
-            Action::make('edit-attachment')
+            \Filament\Actions\Action::make('edit-attachment')
                 ->closeModalByClickingAway(false)
                 ->icon('heroicon-s-pencil')
                 ->iconButton()
@@ -120,11 +119,12 @@ class AttachmentInput extends Field
                 ->closeModalByClickingAway(false)
                 ->multiple(fn () => $this->isMultiple()),
 
-            Action::make('attachment-picker')
+            \Filament\Actions\Action::make('attachment-picker')
                 ->closeModalByClickingAway(false)
                 ->label(__('filament-media-library::picker.select existing media'))
                 ->modalHeading(__('filament-media-library::picker.select existing media'))
                 ->color('gray')
+                ->outlined()
                 ->modalSubmitAction(false)
                 ->modalCancelAction(false)
                 ->modalContent(function (self $component) {

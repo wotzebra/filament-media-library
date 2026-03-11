@@ -1,6 +1,6 @@
 <?php
 
-use Codedor\MediaLibrary\Conversions\LocalConversion;
+use Wotz\MediaLibrary\Conversions\LocalConversion;
 
 return [
     'conversion' => LocalConversion::class,

@@ -1,13 +1,13 @@
 <?php
 
-use Codedor\MediaLibrary\Conversions\Conversion;
-use Codedor\MediaLibrary\Jobs\GenerateAttachmentFormat;
-use Codedor\MediaLibrary\Models\Attachment;
-use Codedor\MediaLibrary\Tests\TestFormats\TestHero;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Mockery\MockInterface;
+use Wotz\MediaLibrary\Conversions\Conversion;
+use Wotz\MediaLibrary\Jobs\GenerateAttachmentFormat;
+use Wotz\MediaLibrary\Models\Attachment;
+use Wotz\MediaLibrary\Tests\TestFormats\TestHero;
 
 uses(RefreshDatabase::class);
 
@@ -71,7 +71,7 @@ it('applies manual crops when regenerating formats', function () {
     expect($attachment->formats()->where('format', $format->key())->first()->data)->not()->toBeEmpty();
 
     // Use the real LocalConversion class to test our fix
-    $conversion = new \Codedor\MediaLibrary\Conversions\LocalConversion;
+    $conversion = new \Wotz\MediaLibrary\Conversions\LocalConversion;
 
     // The conversion should return true and process WITH the manual crop applied
     $result = $conversion->convert($attachment, $format, force: true);

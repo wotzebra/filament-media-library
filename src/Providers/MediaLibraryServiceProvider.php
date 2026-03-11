@@ -1,23 +1,23 @@
 <?php
 
-namespace Codedor\MediaLibrary\Providers;
+namespace Wotz\MediaLibrary\Providers;
 
-use Codedor\MediaLibrary\Collections\Formats;
-use Codedor\MediaLibrary\Commands\GenerateFormats;
-use Codedor\MediaLibrary\Conversions\Conversion;
-use Codedor\MediaLibrary\Conversions\LocalConversion;
-use Codedor\MediaLibrary\Facades\Formats as FacadesFormats;
-use Codedor\MediaLibrary\Formats\Lazyload;
-use Codedor\MediaLibrary\Formats\Thumbnail;
-use Codedor\MediaLibrary\Livewire;
-use Codedor\MediaLibrary\Mixins\UploadedFileMixin;
-use Codedor\MediaLibrary\Views\Picture;
-use Codedor\MediaLibrary\Views\Placeholder;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Blade;
 use Livewire\Livewire as LivewireCore;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
+use Wotz\MediaLibrary\Collections\Formats;
+use Wotz\MediaLibrary\Commands\GenerateFormats;
+use Wotz\MediaLibrary\Conversions\Conversion;
+use Wotz\MediaLibrary\Conversions\LocalConversion;
+use Wotz\MediaLibrary\Facades\Formats as FacadesFormats;
+use Wotz\MediaLibrary\Formats\Lazyload;
+use Wotz\MediaLibrary\Formats\Thumbnail;
+use Wotz\MediaLibrary\Livewire;
+use Wotz\MediaLibrary\Mixins\UploadedFileMixin;
+use Wotz\MediaLibrary\Views\Picture;
+use Wotz\MediaLibrary\Views\Placeholder;
 
 class MediaLibraryServiceProvider extends PackageServiceProvider
 {
@@ -70,6 +70,7 @@ class MediaLibraryServiceProvider extends PackageServiceProvider
 
     protected function registerLivewireComponents()
     {
+        LivewireCore::addNamespace($this->packageName(), classNamespace: 'Wotz\MediaLibrary\Livewire');
         foreach ($this->livewireComponents as $key => $livewireComponent) {
             LivewireCore::component("{$this->packageName()}::$key", $livewireComponent);
         }

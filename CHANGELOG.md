@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v4.0.1 - 2026-02-18
+
+### What's Changed
+
+* Formatter updates so we can save in higher quality
+
+**Full Changelog**: https://github.com/codedor/filament-media-library/compare/v4.0.0...v4.0.1
+
+## v4.0.0 - 2026-01-20
+
+### What's Changed
+
+* Bump dependabot/fetch-metadata from 2.4.0 to 2.5.0 by @dependabot[bot] in https://github.com/codedor/filament-media-library/pull/71
+* Bump actions/checkout from 5 to 6 by @dependabot[bot] in https://github.com/codedor/filament-media-library/pull/70
+* Upgrade to Filament v4 by @jyrkidn in https://github.com/codedor/filament-media-library/pull/57
+* Upgrade to Filament v4 by @jyrkidn in https://github.com/codedor/filament-media-library/pull/69
+
+**Full Changelog**: https://github.com/codedor/filament-media-library/compare/v3.1.0...v4.0.0
+
 ## v3.1.0 - 2025-11-20
 
 ### What's Changed

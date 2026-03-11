@@ -21,7 +21,7 @@
         <img src="{{ $attachment->getFormatOrOriginal('thumbnail') }}" />
     @endif
 
-    <abbr class="absolute inset-0 z-[1]" title="{{ $attachment->filename }}">
+    <abbr class="absolute inset-0 z-1" title="{{ $attachment->filename }}">
         <span class="invisible">{{ $attachment->filename }}</span>
     </abbr>
 </div>

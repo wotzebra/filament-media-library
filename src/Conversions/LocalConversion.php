@@ -1,11 +1,11 @@
 <?php
 
-namespace Codedor\MediaLibrary\Conversions;
+namespace Wotz\MediaLibrary\Conversions;
 
-use Codedor\MediaLibrary\Formats\Format;
-use Codedor\MediaLibrary\Models\Attachment;
 use Illuminate\Support\Str;
 use Spatie\Image\Image;
+use Wotz\MediaLibrary\Formats\Format;
+use Wotz\MediaLibrary\Models\Attachment;
 
 class LocalConversion implements Conversion
 {

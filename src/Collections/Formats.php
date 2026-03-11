@@ -1,12 +1,12 @@
 <?php
 
-namespace Codedor\MediaLibrary\Collections;
+namespace Wotz\MediaLibrary\Collections;
 
-use Codedor\MediaLibrary\Formats\Format;
-use Codedor\MediaLibrary\Jobs\GenerateAttachmentFormat;
-use Codedor\MediaLibrary\Models\Attachment;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Wotz\MediaLibrary\Formats\Format;
+use Wotz\MediaLibrary\Jobs\GenerateAttachmentFormat;
+use Wotz\MediaLibrary\Models\Attachment;
 
 class Formats extends Collection
 {

@@ -1,14 +1,14 @@
 <?php
 
-namespace Codedor\MediaLibrary\Jobs;
+namespace Wotz\MediaLibrary\Jobs;
 
-use Codedor\MediaLibrary\Formats\Format;
-use Codedor\MediaLibrary\Models\Attachment;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Wotz\MediaLibrary\Formats\Format;
+use Wotz\MediaLibrary\Models\Attachment;
 
 class GenerateAttachmentFormat implements ShouldQueue
 {

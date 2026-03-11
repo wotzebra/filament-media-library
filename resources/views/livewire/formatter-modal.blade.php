@@ -52,11 +52,8 @@
                         format: this.currentFormat,
                         data: window.cropper.getData(),
                         crop: window.cropper
-                            .getCroppedCanvas({
-                                width: this.currentFormat.width,
-                                height: this.currentFormat.height,
-                            })
-                            .toDataURL('{{ $forcedMimeType ?? "image/webp" }}'),
+                            .getCroppedCanvas()
+                            .toDataURL('image/png'),
                     })
                 },
                 setFormat (key) {
@@ -154,7 +151,7 @@
                     <div class="max-lg:flex max-md:h-40 max-lg:h-52 gallery overflow-x-auto lg:overflow-y-auto">
                         <template x-for="(format, key) in formats" :key="key">
                             <div
-                                class="flex-shrink-0 max-lg:aspect-[3/4] flex flex-col gap-2 justify-between rounded-lg bg-gray-200 dark:bg-gray-800 p-2"
+                                class="shrink-0 max-lg:aspect-3/4 flex flex-col gap-2 justify-between rounded-lg bg-gray-200 dark:bg-gray-800 p-2"
                                 :class="{'ring-2 ring-primary-500 ring-inset': currentFormat.key === format.key}"
                                 x-on:click="setFormat(key)"
                             >

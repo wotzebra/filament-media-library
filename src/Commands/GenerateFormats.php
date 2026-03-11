@@ -1,12 +1,12 @@
 <?php
 
-namespace Codedor\MediaLibrary\Commands;
+namespace Wotz\MediaLibrary\Commands;
 
-use Codedor\MediaLibrary\Facades\Formats;
-use Codedor\MediaLibrary\Formats\Format;
-use Codedor\MediaLibrary\Jobs\GenerateAttachmentFormat;
-use Codedor\MediaLibrary\Models\Attachment;
 use Illuminate\Console\Command;
+use Wotz\MediaLibrary\Facades\Formats;
+use Wotz\MediaLibrary\Formats\Format;
+use Wotz\MediaLibrary\Jobs\GenerateAttachmentFormat;
+use Wotz\MediaLibrary\Models\Attachment;
 
 class GenerateFormats extends Command
 {

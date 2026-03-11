@@ -1,6 +1,6 @@
 <?php
 
-namespace Codedor\MediaLibrary\Facades;
+namespace Wotz\MediaLibrary\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
@@ -8,6 +8,6 @@ class Formats extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return \Codedor\MediaLibrary\Collections\Formats::class;
+        return \Wotz\MediaLibrary\Collections\Formats::class;
     }
 }

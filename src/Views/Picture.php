@@ -1,11 +1,11 @@
 <?php
 
-namespace Codedor\MediaLibrary\Views;
+namespace Wotz\MediaLibrary\Views;
 
-use Codedor\MediaLibrary\Facades\Formats;
-use Codedor\MediaLibrary\Formats\Format;
-use Codedor\MediaLibrary\Models\Attachment;
 use Illuminate\View\Component;
+use Wotz\MediaLibrary\Facades\Formats;
+use Wotz\MediaLibrary\Formats\Format;
+use Wotz\MediaLibrary\Models\Attachment;
 
 class Picture extends Component
 {

@@ -1,26 +1,25 @@
 <?php
 
-namespace Codedor\MediaLibrary\Resources;
+namespace Wotz\MediaLibrary\Resources;
 
-use Codedor\MediaLibrary\Models\AttachmentTag;
-use Codedor\MediaLibrary\Resources\AttachmentTagResource\Pages\ManageAttachmentTags;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Wotz\MediaLibrary\Models\AttachmentTag;
+use Wotz\MediaLibrary\Resources\AttachmentTagResource\Pages\ManageAttachmentTags;
 
 class AttachmentTagResource extends Resource
 {
     protected static ?string $model = AttachmentTag::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-tag';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-tag';
 
-    public static function form(Form $form): Form
+    public static function form(\Filament\Schemas\Schema $schema): \Filament\Schemas\Schema
     {
-        return $form->schema([
+        return $schema->components([
             TextInput::make('title')
                 ->label(__('filament-media-library::admin.title'))
                 ->required(),
@@ -50,12 +49,12 @@ class AttachmentTagResource extends Resource
                     ->label(__('filament-media-library::admin.is hidden'))
                     ->boolean(),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                \Filament\Actions\EditAction::make(),
+                \Filament\Actions\DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                \Filament\Actions\DeleteBulkAction::make(),
             ]);
     }
 

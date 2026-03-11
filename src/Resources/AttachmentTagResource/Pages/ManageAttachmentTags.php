@@ -1,10 +1,9 @@
 <?php
 
-namespace Codedor\MediaLibrary\Resources\AttachmentTagResource\Pages;
+namespace Wotz\MediaLibrary\Resources\AttachmentTagResource\Pages;
 
-use Codedor\MediaLibrary\Resources\AttachmentTagResource;
-use Filament\Pages\Actions;
 use Filament\Resources\Pages\ManageRecords;
+use Wotz\MediaLibrary\Resources\AttachmentTagResource;
 
 class ManageAttachmentTags extends ManageRecords
 {
@@ -13,7 +12,7 @@ class ManageAttachmentTags extends ManageRecords
     protected function getActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            \Filament\Actions\CreateAction::make(),
         ];
     }
 }

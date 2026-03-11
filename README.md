@@ -29,7 +29,7 @@ Library provides a simple and elegant solution for managing your media files.
 You can install the package via composer:
 
 ```bash
-composer require codedor/filament-media-library
+composer require wotz/filament-media-library
 ```
 
 Run the migrations with:
@@ -62,7 +62,7 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 ## Security Vulnerabilities
 
-If you discover any security-related issues, please email info@codedor.be instead of using the issue tracker.
+If you discover any security-related issues, please email info@whoownsthezebra.be instead of using the issue tracker.
 
 ## License
 

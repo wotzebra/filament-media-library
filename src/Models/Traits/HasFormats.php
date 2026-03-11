@@ -1,11 +1,11 @@
 <?php
 
-namespace Codedor\MediaLibrary\Models\Traits;
+namespace Wotz\MediaLibrary\Models\Traits;
 
-use Codedor\MediaLibrary\Exceptions\FormatNotFound;
-use Codedor\MediaLibrary\Facades\Formats;
-use Codedor\MediaLibrary\Models\AttachmentFormat;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Wotz\MediaLibrary\Exceptions\FormatNotFound;
+use Wotz\MediaLibrary\Facades\Formats;
+use Wotz\MediaLibrary\Models\AttachmentFormat;
 
 trait HasFormats
 {
@@ -52,7 +52,7 @@ trait HasFormats
         $url = $disk->url($filePath);
 
         // Add cache-busting query parameter based on format's updated_at timestamp
-        /** @var \Codedor\MediaLibrary\Models\AttachmentFormat|null $attachmentFormat */
+        /** @var \Wotz\MediaLibrary\Models\AttachmentFormat|null $attachmentFormat */
         $attachmentFormat = $this->formats()->where('format', $format->key())->first();
         if ($attachmentFormat !== null) {
             $timestamp = $attachmentFormat->updated_at->timestamp;

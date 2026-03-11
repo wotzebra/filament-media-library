@@ -1,15 +1,15 @@
 <?php
 
-namespace Codedor\MediaLibrary\Mixins;
+namespace Wotz\MediaLibrary\Mixins;
 
-use Codedor\MediaLibrary\Exceptions\CantOpenFileFromUrlException;
-use Codedor\MediaLibrary\Facades\Formats;
-use Codedor\MediaLibrary\Formats\Thumbnail;
-use Codedor\MediaLibrary\Jobs\GenerateAttachmentFormat;
-use Codedor\MediaLibrary\Models\Attachment;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use Wotz\MediaLibrary\Exceptions\CantOpenFileFromUrlException;
+use Wotz\MediaLibrary\Facades\Formats;
+use Wotz\MediaLibrary\Formats\Thumbnail;
+use Wotz\MediaLibrary\Jobs\GenerateAttachmentFormat;
+use Wotz\MediaLibrary\Models\Attachment;
 
 /**
  * @mixin TemporaryUploadedFile
@@ -42,7 +42,7 @@ class UploadedFileMixin
                     ->slug(),
             ];
 
-            /** @var \Codedor\MediaLibrary\Models\Attachment $attachment */
+            /** @var \Wotz\MediaLibrary\Models\Attachment $attachment */
             $attachment = Attachment::firstOrCreate([
                 'md5' => $data['md5'],
             ], $data);

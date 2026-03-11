@@ -1,7 +1,7 @@
 <?php
 
-use Codedor\MediaLibrary\Models\Attachment;
-use Codedor\MediaLibrary\Tests\TestCase;
+use Wotz\MediaLibrary\Models\Attachment;
+use Wotz\MediaLibrary\Tests\TestCase;
 
 uses(TestCase::class)->in(__DIR__);
 

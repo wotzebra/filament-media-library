@@ -1,6 +1,6 @@
 <?php
 
-namespace Codedor\MediaLibrary\Exceptions;
+namespace Wotz\MediaLibrary\Exceptions;
 
 use Exception;
 

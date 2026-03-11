@@ -38,13 +38,13 @@
 First, install this package via composer:
 
 ```bash
-composer require codedor/filament-media-library
+composer require wotz/filament-media-library
 ```
 
 Then publish the assets with
 
 ```bash
-php artisan vendor:publish --provider "Codedor\MediaLibrary\Providers\MediaLibraryServiceProvider"
+php artisan vendor:publish --provider "Wotz\MediaLibrary\Providers\MediaLibraryServiceProvider"
 ```
 
 and lastly, run the migrations:
@@ -61,7 +61,7 @@ The basic config file consists of the following contents:
 
 ```php
 return [
-    'conversion' => \Codedor\MediaLibrary\Conversions\LocalConversion::class,
+    'conversion' => \Wotz\MediaLibrary\Conversions\LocalConversion::class,
     'enable-format-generate-action' => true,
     'force-format-extension' => [
         'extension' => 'webp',
@@ -126,11 +126,11 @@ This can be used on the Media Library as a bulk action. This action can be disab
 
 ### S3 support
 
-To use S3 as a storage, you can use the `Codedor\MediaLibrary\Conversions\S3Conversion` class.
+To use S3 as a storage, you can use the `Wotz\MediaLibrary\Conversions\S3Conversion` class.
 
 ```php
 return [
-    'conversion' => \Codedor\MediaLibrary\Conversions\S3Conversion::class,
+    'conversion' => \Wotz\MediaLibrary\Conversions\S3Conversion::class,
     // ...
 ];
 ```
@@ -159,14 +159,14 @@ return [
 
 ### Register models
 
-Any model that contains formats should be registered and implement the `Codedor\MediaLibrary\Interfaces\HasFormats`
+Any model that contains formats should be registered and implement the `Wotz\MediaLibrary\Interfaces\HasFormats`
 interface.
 
-Formats must be registered via the `Codedor\MediaLibrary\Facades\Formats` facade to be visible in the formatter.
+Formats must be registered via the `Wotz\MediaLibrary\Facades\Formats` facade to be visible in the formatter.
 
 ```php
 use App\Formats;
-use Codedor\MediaLibrary\Facades\Formats;
+use Wotz\MediaLibrary\Facades\Formats;
 
 public function boot()
 {
@@ -181,7 +181,7 @@ public function boot()
 
 ### Creating formats
 
-Create a new PHP class that extends the `Codedor\MediaLibrary\Formats\Format` class.
+Create a new PHP class that extends the `Wotz\MediaLibrary\Formats\Format` class.
 
 ```php
 <?php
@@ -216,7 +216,7 @@ Formats are tightly coupled with models. This way, specific formats can be fetch
 
 #### Preparing your model
 
-A model should implement the `Codedor\MediaLibrary\Interfaces\HasFormats` interface which contains the `getFormats`
+A model should implement the `Wotz\MediaLibrary\Interfaces\HasFormats` interface which contains the `getFormats`
 method.
 
 ```php
@@ -236,7 +236,7 @@ public static function getFormats(Collection $formats): Collection
 Retrieve the Filesystem of the attachment
 
 ```php
-use Codedor\MediaLibrary\Models\Attachment;
+use Wotz\MediaLibrary\Models\Attachment;
 
 /** @var Illuminate\Contracts\Filesystem $filesystem */
 $filesystem = Attachment::first()->getStorage();
@@ -247,7 +247,7 @@ $filesystem = Attachment::first()->getStorage();
 Retrieve the url for the file of the given format. Returns the original file if the given format is not found.
 
 ```php
-use Codedor\MediaLibrary\Models\Attachment;
+use Wotz\MediaLibrary\Models\Attachment;
 
 /** @var string $url */
 $url = Attachment::first()->getFormatOrOriginal('hero');
@@ -262,7 +262,7 @@ $url = Attachment::first()->getFormatOrOriginal('hero');
 Retrieve the url for the file of the given format. Returns null if the given format is not found.
 
 ```php
-use Codedor\MediaLibrary\Models\Attachment;
+use Wotz\MediaLibrary\Models\Attachment;
 
 /** @var string|null $url */
 $url = Attachment::first()->getFormat('hero');
@@ -277,7 +277,7 @@ $url = Attachment::first()->getFormat('hero');
 Retrieve the url to the original file
 
 ```php
-use Codedor\MediaLibrary\Models\Attachment;
+use Wotz\MediaLibrary\Models\Attachment;
 
 /** @var string $url */
 $url = Attachment::first()->url;
@@ -290,7 +290,7 @@ $url = Attachment::first()->url;
 Retrieve the filename with extension.
 
 ```php
-use Codedor\MediaLibrary\Models\Attachment;
+use Wotz\MediaLibrary\Models\Attachment;
 
 /** @var string $url */
 $url = Attachment::first()->filename;
@@ -359,7 +359,7 @@ This field will give the option to upload or select an already existing image.
 The ID will be stored in de column provided in the `make` method.
 
 ```php
-use Codedor\MediaLibrary\Components\Fields\AttachmentInput;
+use Wotz\MediaLibrary\Components\Fields\AttachmentInput;
 
 AttachmentInput::make('profile_image_id')
     ->label('Profile Image')
@@ -370,7 +370,7 @@ This field inherits the `Filament\Forms\Components\Field` class which means that
 #### Multiple attachments
 
 ```php
-use Codedor\MediaLibrary\Components\Fields\AttachmentInput;
+use Wotz\MediaLibrary\Components\Fields\AttachmentInput;
 
 AttachmentInput::make('profile_image_id')
     ->multiple()
@@ -383,7 +383,7 @@ If you want to override this, you can use the `allowedFormats` method.
 
 ```php
 use App\Formats\Hero;
-use Codedor\MediaLibrary\Components\Fields\AttachmentInput;
+use Wotz\MediaLibrary\Components\Fields\AttachmentInput;
 
 AttachmentInput::make('profile_image_id')
     ->allowedFormats([
@@ -396,7 +396,7 @@ AttachmentInput::make('profile_image_id')
 This column for a table will render the image with the thumbnail format or an icon if attachment is not an image.
 
 ```php
-\Codedor\MediaLibrary\Tables\Columns\AttachmentColumn::make('image_id'),
+\Wotz\MediaLibrary\Tables\Columns\AttachmentColumn::make('image_id'),
 ```
 
 ### AttachmentEntry
@@ -404,7 +404,7 @@ This column for a table will render the image with the thumbnail format or an ic
 This entry for an info list will render the image with the thumbnail format or an icon if attachment is not an image.
 
 ```php
-\Codedor\MediaLibrary\Filament\Entries\AttachmentEntry::make('image'),
+\Wotz\MediaLibrary\Filament\Entries\AttachmentEntry::make('image'),
 ```
 
 

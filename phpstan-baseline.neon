@@ -1,7 +1,7 @@
 parameters:
     ignoreErrors:
         -
-            message: "#^Access to an undefined property Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:\\$id\\.$#"
+            message: "#^Cannot access property \\$id on array\\<string, mixed\\>\\|Illuminate\\\\Database\\\\Eloquent\\\\Model\\.$#"
             count: 1
             path: src/Resources/AttachmentResource.php
         -
@@ -21,18 +21,11 @@ parameters:
             count: 2
             path: src/Filament/Actions/Traits/CanUploadAttachment.php
         -
-            message: "#^Property Codedor\\\\MediaLibrary\\\\Filament\\\\AttachmentInput\\:\\:\\$view \\(view-string\\) does not accept default value of type string.$#"
-            count: 1
-            path: src/Filament/AttachmentInput.php
-        -
-            message: "#^Property Codedor\\\\MediaLibrary\\\\Tables\\\\Columns\\\\AttachmentColumn\\:\\:\\$view \\(view-string\\) does not accept default value of type string.$#"
-            count: 1
-            path: src/Tables/Columns/AttachmentColumn.php
-        -
-            message: "#^Property Codedor\\\\MediaLibrary\\\\Filament\\\\Entries\\\\AttachmentEntry\\:\\:\\$view \\(view-string\\) does not accept default value of type string.$#"
-            count: 1
-            path: src/Filament/Entries/AttachmentEntry.php
-        -
             message: "#^Access to an undefined property Filament\\\\Tables\\\\Contracts\\\\HasTable\\:\\:\\$tableSearch.$#"
             count: 1
             path: src/Resources/AttachmentResource/Pages/ListAttachments.php
+        -
+            message: "#^Access to an undefined property Livewire\\\\Component\\:\\:\\$mountedActions.$#"
+            paths:
+                - src/Filament/Actions/Traits/CanUploadAttachment.php
+                - src/Filament/Actions/Forms/UploadAttachmentAction.php

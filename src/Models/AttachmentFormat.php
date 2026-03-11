@@ -1,6 +1,6 @@
 <?php
 
-namespace Codedor\MediaLibrary\Models;
+namespace Wotz\MediaLibrary\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

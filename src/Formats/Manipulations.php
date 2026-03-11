@@ -1,6 +1,6 @@
 <?php
 
-namespace Codedor\MediaLibrary\Formats;
+namespace Wotz\MediaLibrary\Formats;
 
 use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Enums\AlignPosition;

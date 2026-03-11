@@ -1,6 +1,6 @@
 <?php
 
-namespace Codedor\MediaLibrary\Support;
+namespace Wotz\MediaLibrary\Support;
 
 use Illuminate\Support\Str;
 use Spatie\TemporaryDirectory\TemporaryDirectory as BaseTemporaryDirectory;

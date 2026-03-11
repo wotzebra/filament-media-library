@@ -1,14 +1,14 @@
 <?php
 
-use Codedor\MediaLibrary\Conversions\LocalConversion;
-use Codedor\MediaLibrary\Facades\Formats;
-use Codedor\MediaLibrary\Models\Attachment;
-use Codedor\MediaLibrary\Tests\TestFormats\TestHero;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Mockery\MockInterface;
 use Spatie\Image\Image;
+use Wotz\MediaLibrary\Conversions\LocalConversion;
+use Wotz\MediaLibrary\Facades\Formats;
+use Wotz\MediaLibrary\Models\Attachment;
+use Wotz\MediaLibrary\Tests\TestFormats\TestHero;
 
 uses(RefreshDatabase::class);
 
@@ -20,7 +20,7 @@ it('skips generation if attachment is not an image', function () {
         'extension' => 'txt',
     ]);
 
-    /** @var \Codedor\MediaLibrary\Conversions\Conversion $conversion */
+    /** @var \Wotz\MediaLibrary\Conversions\Conversion $conversion */
     $conversion = app(LocalConversion::class);
 
     expect($conversion->convert($attachment, Formats::exists('test-hero')))
@@ -35,7 +35,7 @@ it('skips generation if attachment is a gif', function () {
         'extension' => 'gif',
     ]);
 
-    /** @var \Codedor\MediaLibrary\Conversions\Conversion $conversion */
+    /** @var \Wotz\MediaLibrary\Conversions\Conversion $conversion */
     $conversion = app(LocalConversion::class);
 
     expect($conversion->convert($attachment, Formats::exists('test-hero')))
@@ -64,10 +64,10 @@ it('converts image to webp', function () {
         File::get(__DIR__ . '/../../TestFiles/test.jpg')
     );
 
-    /** @var \Codedor\MediaLibrary\Formats\Format $format */
+    /** @var \Wotz\MediaLibrary\Formats\Format $format */
     $format = Formats::exists('test-hero');
 
-    /** @var \Codedor\MediaLibrary\Conversions\Conversion $conversion */
+    /** @var \Wotz\MediaLibrary\Conversions\Conversion $conversion */
     $conversion = app(LocalConversion::class);
 
     expect($conversion->convert($attachment, $format, true))

@@ -1,8 +1,8 @@
 <?php
 
-namespace Codedor\MediaLibrary\Tests\TestModels;
+namespace Wotz\MediaLibrary\Tests\TestModels;
 
-use Codedor\MediaLibrary\Interfaces\HasFormats;
 use Illuminate\Database\Eloquent\Model;
+use Wotz\MediaLibrary\Interfaces\HasFormats;
 
 class TestModel extends Model implements HasFormats {}
