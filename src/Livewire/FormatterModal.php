@@ -1,14 +1,14 @@
 <?php
 
-namespace Codedor\MediaLibrary\Livewire;
+namespace Wotz\MediaLibrary\Livewire;
 
-use Codedor\MediaLibrary\Facades\Formats;
-use Codedor\MediaLibrary\Formats\Format;
-use Codedor\MediaLibrary\Models\Attachment;
 use Filament\Notifications\Notification;
 use Illuminate\Support\Collection;
 use Livewire\Attributes\On;
 use Livewire\Component;
+use Wotz\MediaLibrary\Facades\Formats;
+use Wotz\MediaLibrary\Formats\Format;
+use Wotz\MediaLibrary\Models\Attachment;
 use Spatie\Image\Image;
 
 class FormatterModal extends Component
