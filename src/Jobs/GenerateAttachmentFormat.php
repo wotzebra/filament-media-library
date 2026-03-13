@@ -17,19 +17,27 @@ class GenerateAttachmentFormat implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
+    public string $formatClass;
+
+    public string $formatColumn;
+
     public function __construct(
         public Attachment $attachment,
-        public Format $format,
+        Format $format,
         public bool $force = false,
     ) {
+        $this->formatClass = $format::class;
+        $this->formatColumn = $format->column();
         $this->onQueue(config('filament-media-library.format-queue', 'default'));
     }
 
     public function handle()
     {
-        $this->format->conversion()->convert(
+        $format = new $this->formatClass($this->formatColumn);
+
+        $format->conversion()->convert(
             attachment: $this->attachment,
-            format: $this->format,
+            format: $format,
             force: $this->force,
         );
     }
