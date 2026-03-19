@@ -42,7 +42,7 @@ class UploadedFileMixin
                     ->slug(),
             ];
 
-            /** @var \Wotz\MediaLibrary\Models\Attachment $attachment */
+            /** @var Attachment $attachment */
             $attachment = Attachment::firstOrCreate([
                 'md5' => $data['md5'],
             ], $data);

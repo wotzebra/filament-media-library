@@ -2,13 +2,14 @@
 
 namespace Wotz\MediaLibrary\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property string $attachment_id
  * @property string $format
- * @property \Carbon\Carbon $updated_at
+ * @property Carbon $updated_at
  */
 class AttachmentFormat extends Model
 {
