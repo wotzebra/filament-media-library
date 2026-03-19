@@ -11,7 +11,7 @@
     "homepage": "https://github.com/wotzebra/filament-media-library",
     "license": "MIT",
     "require": {
-        "php": "^8.2",
+        "php": "^8.4",
         "blade-ui-kit/blade-icons": "^1.5",
         "wotz/filament-resource-picker": "dev-copilot/update-package-php-8-5-laravel-13 as 2.0",
         "wotz/filament-translatable-tabs": "dev-copilot/update-package-php-8-5-laravel-13 as 2.0",
