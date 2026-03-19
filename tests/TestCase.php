@@ -18,8 +18,6 @@ use Filament\Widgets\WidgetsServiceProvider;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithViews;
 use Livewire\LivewireServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
-use RyanChandler\BladeCaptureDirective\BladeCaptureDirectiveServiceProvider;
-use Spatie\Image\Manipulations;
 use Spatie\Translatable\TranslatableServiceProvider;
 use Wotz\MediaLibrary\Filament\MediaLibraryPlugin;
 use Wotz\MediaLibrary\Providers\MediaLibraryServiceProvider;
@@ -28,8 +26,6 @@ use Wotz\TranslatableTabs\Providers\TranslatableTabsServiceProvider;
 class TestCase extends Orchestra
 {
     use InteractsWithViews;
-
-    public Manipulations $manipulations;
 
     protected function setUp(): void
     {
@@ -55,7 +51,6 @@ class TestCase extends Orchestra
             LivewireServiceProvider::class,
             TranslatableTabsServiceProvider::class,
             ActionsServiceProvider::class,
-            BladeCaptureDirectiveServiceProvider::class,
             BladeHeroiconsServiceProvider::class,
             BladeIconsServiceProvider::class,
             FilamentServiceProvider::class,
