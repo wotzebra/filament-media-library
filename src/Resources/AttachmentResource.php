@@ -2,12 +2,21 @@
 
 namespace Wotz\MediaLibrary\Resources;
 
+use Filament\Actions\Action;
+use Filament\Actions\BulkAction;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters;
@@ -35,14 +44,14 @@ class AttachmentResource extends Resource
         return __('filament-media-library::attachment.dashboard navigation title');
     }
 
-    public static function form(\Filament\Schemas\Schema $schema): \Filament\Schemas\Schema
+    public static function form(Schema $schema): Schema
     {
         return $schema->components([
             TranslatableTabs::make()
                 ->icon('heroicon-o-signal')
                 ->columnSpan(['lg' => 2])
                 ->defaultFields([
-                    \Filament\Schemas\Components\Grid::make(2)->schema([
+                    Grid::make(2)->schema([
                         TextEntry::make('name')
                             ->label(__('filament-media-library::admin.name'))
                             ->state(fn (Attachment $record) => $record->name),
@@ -84,7 +93,7 @@ class AttachmentResource extends Resource
                         ->preload()
                         ->multiple(),
 
-                    \Filament\Schemas\Components\Section::make('Preview')
+                    Section::make('Preview')
                         ->schema([
                             TextEntry::make('image')
                                 ->label(__('filament-media-library::admin.image'))
@@ -177,11 +186,11 @@ class AttachmentResource extends Resource
                     ->multiple(),
             ])
             ->recordActions([
-                \Filament\Actions\Action::make('format')
+                Action::make('format')
                     ->label(__('filament-media-library::admin.format'))
                     ->icon('heroicon-o-scissors')
                     ->hidden(fn (Attachment $record) => ! is_convertible_image($record->extension))
-                    ->action(function (\Filament\Actions\Action $action) {
+                    ->action(function (Action $action) {
                         /** @var Component&Tables\Contracts\HasTable $livewire */
                         $livewire = $action->getTable()->getLivewire();
 
@@ -196,13 +205,13 @@ class AttachmentResource extends Resource
                         );
                     }),
 
-                \Filament\Actions\EditAction::make(),
+                EditAction::make(),
 
-                \Filament\Actions\DeleteAction::make(),
+                DeleteAction::make(),
             ])
             ->toolbarActions([
-                \Filament\Actions\DeleteBulkAction::make(),
-                \Filament\Actions\BulkAction::make('generate-formats')
+                DeleteBulkAction::make(),
+                BulkAction::make('generate-formats')
                     ->label(__('filament-media-library::admin.generate formats'))
                     ->icon('heroicon-o-scissors')
                     ->deselectRecordsAfterCompletion()
@@ -216,7 +225,7 @@ class AttachmentResource extends Resource
 
                         Select::make('formats')
                             ->label(__('filament-media-library::formatter.formats to generate'))
-                            ->hidden(fn (\Filament\Schemas\Components\Utilities\Get $get) => $get('generate_all'))
+                            ->hidden(fn (Get $get) => $get('generate_all'))
                             ->multiple()
                             ->options(fn () => Formats::mapToKebab()->mapWithKeys(fn (Format $format, $key) => [
                                 $key => $format->name(),
@@ -227,7 +236,7 @@ class AttachmentResource extends Resource
                             ->helperText(__('filament-media-library::formatter.force generate help'))
                             ->default(true),
                     ])
-                    ->action(function (\Filament\Actions\BulkAction $action, array $data, Collection $selectedRecords) {
+                    ->action(function (BulkAction $action, array $data, Collection $selectedRecords) {
                         $formats = Formats::mapToKebab()->when(
                             ! ($data['generate_all'] ?? false),
                             fn ($formats) => $formats->only($data['formats'] ?? [])
