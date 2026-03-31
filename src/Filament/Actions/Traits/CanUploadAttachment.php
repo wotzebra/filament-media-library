@@ -8,6 +8,10 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Notifications\Notification;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
+use Filament\Schemas\Components\Wizard\Step;
 use Illuminate\Support\Arr;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
@@ -38,11 +42,11 @@ trait CanUploadAttachment
         return $this->evaluate($this->multiple);
     }
 
-    protected function getUploadStep(): \Filament\Schemas\Components\Wizard\Step
+    protected function getUploadStep(): Step
     {
-        return \Filament\Schemas\Components\Wizard\Step::make(__('filament-media-library::upload.upload step title'))
+        return Step::make(__('filament-media-library::upload.upload step title'))
             ->description(__('filament-media-library::upload.upload step intro'))
-            ->afterValidation(function (\Filament\Schemas\Components\Utilities\Get $get, \Filament\Schemas\Components\Utilities\Set $set) {
+            ->afterValidation(function (Get $get, Set $set) {
                 foreach (Arr::wrap($get('attachments')) as $file) {
                     if ($file instanceof TemporaryUploadedFile) {
                         $md5 = md5($file->getClientOriginalName());
@@ -58,7 +62,7 @@ trait CanUploadAttachment
                     ->hiddenLabel()
                     ->required()
                     ->multiple(fn () => $this->isMultiple())
-                    ->saveUploadedFileUsing(function (TemporaryUploadedFile $file, \Filament\Schemas\Components\Utilities\Set $set): string {
+                    ->saveUploadedFileUsing(function (TemporaryUploadedFile $file, Set $set): string {
                         $attachment = $file->save();
 
                         return $attachment->id;
@@ -66,11 +70,11 @@ trait CanUploadAttachment
             ]);
     }
 
-    protected function getAttachmentInformationStep(): \Filament\Schemas\Components\Wizard\Step
+    protected function getAttachmentInformationStep(): Step
     {
-        return \Filament\Schemas\Components\Wizard\Step::make(__('filament-media-library::upload.attachment information step title'))
+        return Step::make(__('filament-media-library::upload.attachment information step title'))
             ->description(__('filament-media-library::upload.attachment information step intro'))
-            ->schema(function ($state, \Filament\Schemas\Components\Utilities\Get $get) {
+            ->schema(function ($state, Get $get) {
                 return collect($state['attachments'] ?? [])
                     ->filter(fn ($upload) => $upload instanceof TemporaryUploadedFile)
                     ->map(function ($upload) use ($get) {
@@ -92,7 +96,7 @@ trait CanUploadAttachment
                                 ->disabled(fn (Select $component): bool => ! $component->getOptions());
                         }
 
-                        return \Filament\Schemas\Components\Section::make()
+                        return Section::make()
                             ->description($upload->getClientOriginalName())
                             ->collapsible()
                             ->columns()
