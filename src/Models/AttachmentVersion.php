@@ -2,6 +2,7 @@
 
 namespace Wotz\MediaLibrary\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -20,7 +21,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $disk
  * @property array<int, array{format: string, data: mixed}>|null $format_data
  * @property int|null $replaced_by_user_id
- * @property \Carbon\Carbon $replaced_at
+ * @property Carbon $replaced_at
  */
 class AttachmentVersion extends Model
 {
