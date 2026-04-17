@@ -37,4 +37,8 @@ return [
         ],
     ],
     'temporary_directory_path' => storage_path('filament-media-library/tmp'),
+
+    'versioning' => [
+        'keep_versions' => 5,
+    ],
 ];
