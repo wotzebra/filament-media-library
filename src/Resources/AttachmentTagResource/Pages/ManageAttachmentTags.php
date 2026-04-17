@@ -2,6 +2,7 @@
 
 namespace Wotz\MediaLibrary\Resources\AttachmentTagResource\Pages;
 
+use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ManageRecords;
 use Wotz\MediaLibrary\Resources\AttachmentTagResource;
 
@@ -12,7 +13,7 @@ class ManageAttachmentTags extends ManageRecords
     protected function getActions(): array
     {
         return [
-            \Filament\Actions\CreateAction::make(),
+            CreateAction::make(),
         ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Wotz\MediaLibrary\Resources\AttachmentResource\Pages;
 
+use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 use Wotz\MediaLibrary\Resources\AttachmentResource;
 use Wotz\TranslatableTabs\Resources\Traits\HasTranslations;
@@ -15,7 +16,7 @@ class EditAttachment extends EditRecord
     protected function getActions(): array
     {
         return [
-            \Filament\Actions\DeleteAction::make(),
+            DeleteAction::make(),
         ];
     }
 }

@@ -7,7 +7,7 @@ use Wotz\MediaLibrary\Tests\TestModels\TestModel;
 
 it('registers model', function () {
     expect(Formats::register([TestHero::class]))
-        ->toBeInstanceOf(\Wotz\MediaLibrary\Collections\Formats::class)
+        ->toBeInstanceOf(Wotz\MediaLibrary\Collections\Formats::class)
         ->toHaveKey(TestModel::class)
         ->first()
         ->first()
