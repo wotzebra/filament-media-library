@@ -58,6 +58,10 @@
                 @if (! empty($height()))
                     height="{{ $height() }}"
                 @endif
+
+                @if ($fetchpriority)
+                    fetchpriority="{{ $fetchpriority }}"
+                @endif
             >
         </picture>
     </div>
