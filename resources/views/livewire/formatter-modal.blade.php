@@ -60,11 +60,7 @@
                 },
                 setFormat (key) {
                     this.currentFormat = this.formats[key] || null
-
-                    if (this.currentFormat) {
-                        window.cropper.setAspectRatio(this.currentFormat.aspectRatio)
-                        window.cropper.setData(this.previousFormats[this.currentFormat.key] || {})
-                    }
+                    this.loadFormatter()
                 }
             }"
             x-on:filament-media-library::load-formatter.window="loadFormatter()"

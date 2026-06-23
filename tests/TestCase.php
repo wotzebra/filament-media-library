@@ -13,6 +13,7 @@ use Filament\Tables\TablesServiceProvider;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithViews;
 use Livewire\LivewireServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
+use OwenVoke\BladeFontAwesome\BladeFontAwesomeServiceProvider;
 use RyanChandler\BladeCaptureDirective\BladeCaptureDirectiveServiceProvider;
 use Spatie\Image\Manipulations;
 use Spatie\Translatable\TranslatableServiceProvider;
@@ -44,6 +45,7 @@ class TestCase extends Orchestra
             FilamentServiceProvider::class,
             FormsServiceProvider::class,
             LivewireServiceProvider::class,
+            BladeFontAwesomeServiceProvider::class,
             NotificationsServiceProvider::class,
             SupportServiceProvider::class,
             TablesServiceProvider::class,
