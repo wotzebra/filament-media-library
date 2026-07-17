@@ -466,10 +466,13 @@ The versioning behaviour can be configured in `config/filament-media-library.php
 ```php
 'versioning' => [
     'keep_versions' => 5, // Number of previous versions to keep per attachment
+    'max_file_size' => null, // Maximum size in kilobytes for a replacement file. `null` means no limit.
 ],
 ```
 
 Old versions beyond the `keep_versions` limit are automatically pruned (both the database record and the stored files).
+
+Replacement files are validated against the extensions listed under `extensions` in the same config file.
 
 ### Replace a file
 
@@ -511,6 +514,15 @@ Calling `revertToVersion` will:
 3. Restore the format data that was saved with that version.
 4. Delete the reverted version record and prune old versions.
 5. Fire an `AttachmentReverted` event.
+
+It throws before touching anything when the version cannot be restored safely:
+
+| Exception | Thrown when |
+|---|---|
+| `VersionDoesNotBelongToAttachment` | The given version belongs to another attachment |
+| `VersionFilesMissing` | The version's directory no longer holds any files |
+
+Both `replaceFile` and `revertToVersion` run their database writes in a transaction and put the previous files back when a step fails, so a failed call leaves the attachment on its original file.
 
 In the Filament admin panel, the **Version history** dropdown on the attachment edit page lists all available previous versions. Each entry shows the filename and the date/time it was replaced.
 
@@ -560,8 +572,8 @@ Fired after an attachment has been reverted to a previous version.
 use Wotz\MediaLibrary\Events\AttachmentReverted;
 
 Event::listen(AttachmentReverted::class, function (AttachmentReverted $event) {
-    $event->attachment; // The updated Attachment model
-    $event->version;    // The AttachmentVersion that was restored
+    $event->attachment;      // The updated Attachment model
+    $event->revertedVersion; // The AttachmentVersion that was restored
 });
 ```
 

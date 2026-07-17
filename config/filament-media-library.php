@@ -40,5 +40,7 @@ return [
 
     'versioning' => [
         'keep_versions' => 5,
+        // Maximum size in kilobytes for a replacement file. `null` means no limit.
+        'max_file_size' => null,
     ],
 ];

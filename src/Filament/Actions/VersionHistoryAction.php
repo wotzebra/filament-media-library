@@ -6,22 +6,21 @@ use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Notifications\Notification;
 use Livewire\Component;
+use Wotz\MediaLibrary\Models\Attachment;
 use Wotz\MediaLibrary\Models\AttachmentVersion;
 
 class VersionHistoryAction
 {
-    public static function make(mixed $record): ActionGroup
+    public static function make(Attachment $record): ActionGroup
     {
         $versions = $record->versions;
 
         if ($versions->isEmpty()) {
-            return ActionGroup::make([
+            return static::group([
                 Action::make('no_versions')
                     ->label(__('filament-media-library::versioning.no_versions'))
                     ->disabled(),
-            ])
-                ->label(__('filament-media-library::versioning.version_history'))
-                ->icon('heroicon-o-clock');
+            ]);
         }
 
         $actions = $versions->map(fn (AttachmentVersion $version) => Action::make("revert_v{$version->version_number}")
@@ -44,10 +43,17 @@ class VersionHistoryAction
             })
         )->values()->all();
 
+        return static::group($actions)->badge($versions->count());
+    }
+
+    /**
+     * @param  array<int, Action>  $actions
+     */
+    protected static function group(array $actions): ActionGroup
+    {
         return ActionGroup::make($actions)
             ->label(__('filament-media-library::versioning.version_history'))
             ->icon('heroicon-o-clock')
-            ->button()
-            ->badge($versions->count());
+            ->button();
     }
 }

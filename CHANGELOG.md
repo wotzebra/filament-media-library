@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### What's Changed
 
 * E20-137 Add attachment versioning: replace files and revert to previous versions
+* `EditAttachment` now declares its header actions through `getHeaderActions()` instead of the deprecated `getActions()` hook. No visible change: the `DeleteAction` was already rendered through the deprecated path.
+* `Attachment::$url` now carries a `?v={version}` cache buster once a file has been replaced, so a replacement with an identical filename is no longer served from cache. Temporary (signed) urls are unaffected.
 
 ---
 

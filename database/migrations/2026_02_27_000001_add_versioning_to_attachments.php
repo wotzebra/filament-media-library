@@ -28,6 +28,8 @@ return new class extends Migration
             $table->json('format_data')->nullable();
             $table->unsignedBigInteger('replaced_by_user_id')->nullable();
             $table->timestamp('replaced_at');
+
+            $table->unique(['attachment_id', 'version_number']);
         });
     }
 
