@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * E20-137 Add attachment versioning: replace files and revert to previous versions
 * `EditAttachment` now declares its header actions through `getHeaderActions()` instead of the deprecated `getActions()` hook. No visible change: the `DeleteAction` was already rendered through the deprecated path.
 * `Attachment::$url` now carries a `?v={version}` cache buster once a file has been replaced, so a replacement with an identical filename is no longer served from cache. Temporary (signed) urls are unaffected.
+* Reverting a version whose files are no longer stored now reports a notification instead of an uncaught `VersionFilesMissing`. This happens when the attachment was already broken when it got replaced, so nothing was ever archived.
+* The replace and revert actions redirect back to the page on success. Filament caches header actions at boot, so the version history dropdown kept listing the versions from before the action until the page was reloaded by hand.
 
 ---
 

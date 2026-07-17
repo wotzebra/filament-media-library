@@ -76,6 +76,53 @@ it('rejects a replacement with an unsupported extension', function () {
         ->extension->toBe('jpg');
 });
 
+it('refreshes the page after a replace, so the version history is not left stale', function () {
+    Queue::fake();
+    Storage::fake('public');
+
+    $attachment = editableAttachment();
+
+    Livewire::test(EditAttachment::class, ['record' => $attachment->getKey()])
+        ->mountAction('replaceFile')
+        ->fillForm(['file' => TemporaryUploadedFile::fake()->image('replacement.png', 120, 120)])
+        ->callMountedAction()
+        ->assertHasNoFormErrors()
+        ->assertRedirect();
+});
+
+// Reverting an attachment whose file was already broken: nothing was ever archived,
+// so the guard refuses. That has to read as a notification, not a 500.
+it('reports a friendly error when the archived files of a version are gone', function () {
+    Queue::fake();
+    Storage::fake('public');
+
+    $attachment = editableAttachment();
+    $attachment->replaceFile(temporaryUploadedFile('replacement.jpg', 120, 120));
+
+    Storage::disk('public')->deleteDirectory($attachment->getVersionDirectory(1));
+
+    Livewire::test(EditAttachment::class, ['record' => $attachment->getKey()])
+        ->callAction('revert_v1')
+        ->assertNotified(__('filament-media-library::versioning.version_files_missing'))
+        ->assertNoRedirect();
+
+    expect($attachment->fresh())
+        ->name->toBe('replacement')
+        ->version->toBe(2);
+});
+
+it('refreshes the page after a revert', function () {
+    Queue::fake();
+    Storage::fake('public');
+
+    $attachment = editableAttachment();
+    $attachment->replaceFile(temporaryUploadedFile('replacement.jpg', 120, 120));
+
+    Livewire::test(EditAttachment::class, ['record' => $attachment->getKey()])
+        ->callAction('revert_v1')
+        ->assertRedirect();
+});
+
 it('lists a revertable version once the file has been replaced', function () {
     Queue::fake();
     Storage::fake('public');

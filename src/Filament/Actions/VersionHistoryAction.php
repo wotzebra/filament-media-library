@@ -6,6 +6,8 @@ use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Notifications\Notification;
 use Livewire\Component;
+use Livewire\Livewire;
+use Wotz\MediaLibrary\Exceptions\VersionFilesMissing;
 use Wotz\MediaLibrary\Models\Attachment;
 use Wotz\MediaLibrary\Models\AttachmentVersion;
 
@@ -28,18 +30,25 @@ class VersionHistoryAction
             ->requiresConfirmation()
             ->modalHeading(__('filament-media-library::versioning.revert_confirm_heading'))
             ->action(function (Component $livewire) use ($record, $version): void {
-                $record->revertToVersion($version);
+                try {
+                    $record->revertToVersion($version);
+                } catch (VersionFilesMissing) {
+                    Notification::make()
+                        ->title(__('filament-media-library::versioning.version_files_missing'))
+                        ->danger()
+                        ->send();
+
+                    return;
+                }
 
                 Notification::make()
                     ->title(__('filament-media-library::versioning.version_reverted', ['version' => $version->version_number]))
                     ->success()
                     ->send();
 
-                if (method_exists($livewire, 'refreshFormData')) {
-                    $livewire->refreshFormData([
-                        'name', 'extension', 'mime_type', 'type', 'size', 'width', 'height', 'version',
-                    ]);
-                }
+                // Filament caches the header actions at boot, so this group still holds the
+                // versions from before the revert. Only a new request rebuilds the list.
+                $livewire->redirect(Livewire::originalUrl());
             })
         )->values()->all();
 

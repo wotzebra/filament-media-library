@@ -524,7 +524,9 @@ It throws before touching anything when the version cannot be restored safely:
 
 Both `replaceFile` and `revertToVersion` run their database writes in a transaction and put the previous files back when a step fails, so a failed call leaves the attachment on its original file.
 
-In the Filament admin panel, the **Version history** dropdown on the attachment edit page lists all available previous versions. Each entry shows the filename and the date/time it was replaced.
+In the Filament admin panel, the **Version history** dropdown on the attachment edit page lists all available previous versions. Each entry shows the filename and the date/time it was replaced. A version whose files are no longer stored reports a notification rather than an error.
+
+Both the **Replace file** and the revert actions redirect back to the page when they succeed. Filament caches its header actions at boot, so without that redirect the version history would keep listing the versions from before the action.
 
 ### Listing versions
 

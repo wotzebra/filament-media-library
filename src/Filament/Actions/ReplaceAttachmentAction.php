@@ -10,6 +10,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use Livewire\Livewire;
 use Wotz\MediaLibrary\Models\Attachment;
 
 class ReplaceAttachmentAction extends Action
@@ -45,11 +46,10 @@ class ReplaceAttachmentAction extends Action
                     ->success()
                     ->send();
 
-                if (method_exists($livewire, 'refreshFormData')) {
-                    $livewire->refreshFormData([
-                        'name', 'extension', 'mime_type', 'type', 'size', 'width', 'height', 'version',
-                    ]);
-                }
+                // Filament caches the header actions at boot, so the version history still
+                // holds the versions from before this replace. Only a new request rebuilds
+                // the list, and it refreshes the preview and metadata along with it.
+                $livewire->redirect(Livewire::originalUrl());
             });
     }
 

@@ -7,6 +7,7 @@ return [
     'file_replace_failed' => 'The file could not be replaced',
     'unsupported_extension' => 'Files with the :extension extension are not supported',
     'version_reverted' => 'Reverted to version :version',
+    'version_files_missing' => 'This version can no longer be restored, its files are no longer stored',
     'revert_confirm_heading' => 'Are you sure you want to revert to this version?',
     'no_versions' => 'No previous versions',
 ];
