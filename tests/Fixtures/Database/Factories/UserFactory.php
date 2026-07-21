@@ -2,9 +2,9 @@
 
 namespace Wotz\MediaLibrary\Tests\Fixtures\Database\Factories;
 
-use Wotz\MediaLibrary\Tests\Fixtures\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use Wotz\MediaLibrary\Tests\Fixtures\Models\User;
 
 class UserFactory extends Factory
 {

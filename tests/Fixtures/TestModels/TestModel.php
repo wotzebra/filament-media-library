@@ -2,7 +2,7 @@
 
 namespace Wotz\MediaLibrary\Tests\Fixtures\TestModels;
 
-use Wotz\MediaLibrary\Interfaces\HasFormats;
 use Illuminate\Database\Eloquent\Model;
+use Wotz\MediaLibrary\Interfaces\HasFormats;
 
 class TestModel extends Model implements HasFormats {}

@@ -3,10 +3,10 @@
 namespace Wotz\MediaLibrary\Rules;
 
 use Closure;
-use Wotz\MediaLibrary\Support\FileUploadConfig;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Support\Number;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Wotz\MediaLibrary\Support\FileUploadConfig;
 
 class FileRule implements ValidationRule
 {

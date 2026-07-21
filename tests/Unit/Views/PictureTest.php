@@ -1,10 +1,10 @@
 <?php
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Wotz\MediaLibrary\Facades\Formats;
 use Wotz\MediaLibrary\Tests\Fixtures\TestFormats\TestHero;
 use Wotz\MediaLibrary\Tests\Fixtures\TestFormats\TestNoHeight;
 use Wotz\MediaLibrary\Views\Picture;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 

@@ -1,9 +1,9 @@
 <?php
 
+use Illuminate\Http\UploadedFile;
 use Wotz\MediaLibrary\Resources\AttachmentResource\Pages\ListAttachments;
 use Wotz\MediaLibrary\Support\FileUploadConfig;
 use Wotz\MediaLibrary\Tests\Fixtures\Models\User;
-use Illuminate\Http\UploadedFile;
 
 use function Pest\Livewire\livewire;
 
