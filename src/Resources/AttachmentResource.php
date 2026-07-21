@@ -135,7 +135,6 @@ class AttachmentResource extends Resource
                     ->searchable(query: function ($query, string $search) {
                         return $query->whereHas('tags', fn ($query) => $query->where('title', 'like', "%$search%"));
                     })
-                    ->sortable()
                     ->getStateUsing(fn (Attachment $record) => $record->tags->implode('title', ', ')),
 
                 TextColumn::make('image')
