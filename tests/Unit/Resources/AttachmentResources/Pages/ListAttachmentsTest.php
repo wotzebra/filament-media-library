@@ -18,14 +18,14 @@ beforeEach(function () {
 
 it('cannot upload files with too big dimensions', function () {
     Livewire::test(ListAttachments::class)
-        ->mountAction('upload')
+        ->mountAction('attachment-upload')
         ->assertSee('Upload')
-        ->fillForm([
+        ->setActionData([
             'attachments' => [
                 UploadedFile::fake()->image('multiple-file1.jpg', 200, 200),
             ],
-        ], 'mountedActionForm')
-        ->goToNextWizardStep('mountedActionForm')
+        ])
+        ->goToNextWizardStep()
         ->assertHasActionErrors([
             'attachments' => 'File `multiple-file1.jpg` has the dimensions of 200x200 which is greater than the maximum allowed 100x100',
         ]);
@@ -33,14 +33,14 @@ it('cannot upload files with too big dimensions', function () {
 
 it('cannot upload files with too big width', function () {
     Livewire::test(ListAttachments::class)
-        ->mountAction('upload')
+        ->mountAction('attachment-upload')
         ->assertSee('Upload')
-        ->fillForm([
+        ->setActionData([
             'attachments' => [
                 UploadedFile::fake()->image('multiple-file1.jpg', 200, 99),
             ],
-        ], 'mountedActionForm')
-        ->goToNextWizardStep('mountedActionForm')
+        ])
+        ->goToNextWizardStep()
         ->assertHasActionErrors([
             'attachments' => 'File `multiple-file1.jpg` has the dimensions of 200x99 which is greater than the maximum allowed 100x100',
         ]);
@@ -48,14 +48,14 @@ it('cannot upload files with too big width', function () {
 
 it('cannot upload files with too big height', function () {
     Livewire::test(ListAttachments::class)
-        ->mountAction('upload')
+        ->mountAction('attachment-upload')
         ->assertSee('Upload')
-        ->fillForm([
+        ->setActionData([
             'attachments' => [
                 UploadedFile::fake()->image('multiple-file1.jpg', 99, 200),
             ],
-        ], 'mountedActionForm')
-        ->goToNextWizardStep('mountedActionForm')
+        ])
+        ->goToNextWizardStep()
         ->assertHasActionErrors([
             'attachments' => 'File `multiple-file1.jpg` has the dimensions of 99x200 which is greater than the maximum allowed 100x100',
         ]);
@@ -63,14 +63,14 @@ it('cannot upload files with too big height', function () {
 
 it('cannot upload file with correct dimensions', function () {
     Livewire::test(ListAttachments::class)
-        ->mountAction('upload')
+        ->mountAction('attachment-upload')
         ->assertSee('Upload')
-        ->fillForm([
+        ->setActionData([
             'attachments' => [
                 UploadedFile::fake()->image('multiple-file1.jpg', 100, 100),
             ],
-        ], 'mountedActionForm')
-        ->goToNextWizardStep('mountedActionForm')
+        ])
+        ->goToNextWizardStep()
         ->assertHasNoActionErrors([
             'attachments',
         ]);
@@ -78,14 +78,14 @@ it('cannot upload file with correct dimensions', function () {
 
 it('cannot upload image that is too large', function () {
     Livewire::test(ListAttachments::class)
-        ->mountAction('upload')
+        ->mountAction('attachment-upload')
         ->assertSee('Upload')
-        ->fillForm([
+        ->setActionData([
             'attachments' => [
                 UploadedFile::fake()->image('multiple-file1.jpg')->size(6),
             ],
-        ], 'mountedActionForm')
-        ->goToNextWizardStep('mountedActionForm')
+        ])
+        ->goToNextWizardStep()
         ->assertHasActionErrors([
             'attachments' => 'File `multiple-file1.jpg` has a size of 6 KB which is greater than the maximum allowed 5 KB',
         ]);
@@ -93,14 +93,14 @@ it('cannot upload image that is too large', function () {
 
 it('can upload image that is not larger than max file size', function () {
     Livewire::test(ListAttachments::class)
-        ->mountAction('upload')
+        ->mountAction('attachment-upload')
         ->assertSee('Upload')
-        ->fillForm([
+        ->setActionData([
             'attachments' => [
                 UploadedFile::fake()->image('multiple-file1.jpg')->size(4),
             ],
-        ], 'mountedActionForm')
-        ->goToNextWizardStep('mountedActionForm')
+        ])
+        ->goToNextWizardStep()
         ->assertHasNoActionErrors([
             'attachments',
         ]);
@@ -112,14 +112,14 @@ it('cannot upload pdf that is too large', function () {
         ->andReturn(5 * 1024); // 5 KB
 
     Livewire::test(ListAttachments::class)
-        ->mountAction('upload')
+        ->mountAction('attachment-upload')
         ->assertSee('Upload')
-        ->fillForm([
+        ->setActionData([
             'attachments' => [
                 UploadedFile::fake()->create('multiple-file1.pdf', 6), // 6 KB
             ],
-        ], 'mountedActionForm')
-        ->goToNextWizardStep('mountedActionForm')
+        ])
+        ->goToNextWizardStep()
         ->assertHasActionErrors([
             'attachments' => 'File `multiple-file1.pdf` has a size of 6 KB which is greater than the maximum allowed 5 KB',
         ]);
@@ -131,14 +131,14 @@ it('can upload pdf that is not larger than max file size', function () {
         ->andReturn(5 * 1024); // 5 KB
 
     Livewire::test(ListAttachments::class)
-        ->mountAction('upload')
+        ->mountAction('attachment-upload')
         ->assertSee('Upload')
-        ->fillForm([
+        ->setActionData([
             'attachments' => [
                 UploadedFile::fake()->create('multiple-file1.pdf', 4),
             ],
-        ], 'mountedActionForm')
-        ->goToNextWizardStep('mountedActionForm')
+        ])
+        ->goToNextWizardStep()
         ->assertHasNoActionErrors([
             'attachments',
         ]);
@@ -146,14 +146,14 @@ it('can upload pdf that is not larger than max file size', function () {
 
 it('cannot upload image that has no valid extension', function () {
     Livewire::test(ListAttachments::class)
-        ->mountAction('upload')
+        ->mountAction('attachment-upload')
         ->assertSee('Upload')
-        ->fillForm([
+        ->setActionData([
             'attachments' => [
                 UploadedFile::fake()->image('multiple-file1.xyz'),
             ],
-        ], 'mountedActionForm')
-        ->goToNextWizardStep('mountedActionForm')
+        ])
+        ->goToNextWizardStep()
         ->assertHasActionErrors([
             'attachments' => 'File `multiple-file1.xyz` has a not allowed extension of xyz',
         ]);
@@ -161,14 +161,14 @@ it('cannot upload image that has no valid extension', function () {
 
 it('can upload image that has valid extension', function () {
     Livewire::test(ListAttachments::class)
-        ->mountAction('upload')
+        ->mountAction('attachment-upload')
         ->assertSee('Upload')
-        ->fillForm([
+        ->setActionData([
             'attachments' => [
                 UploadedFile::fake()->image('multiple-file1.jpg')->size(4),
             ],
-        ], 'mountedActionForm')
-        ->goToNextWizardStep('mountedActionForm')
+        ])
+        ->goToNextWizardStep()
         ->assertHasNoActionErrors([
             'attachments',
         ]);
@@ -176,14 +176,14 @@ it('can upload image that has valid extension', function () {
 
 it('cannot upload image with wrong color type', function () {
     Livewire::test(ListAttachments::class)
-        ->mountAction('upload')
+        ->mountAction('attachment-upload')
         ->assertSee('Upload')
-        ->fillForm([
+        ->setActionData([
             'attachments' => [
                 UploadedFile::fake()->createWithContent('cmyk.jpeg', file_get_contents(__DIR__ . '/../../../../Fixtures/images/cmyk.jpeg')),
             ],
-        ], 'mountedActionForm')
-        ->goToNextWizardStep('mountedActionForm')
+        ])
+        ->goToNextWizardStep()
         ->assertHasActionErrors([
             'attachments' => 'Image `cmyk.jpeg` must be RGB and not CMYK',
         ]);
@@ -191,14 +191,14 @@ it('cannot upload image with wrong color type', function () {
 
 it('can upload image that is rgb', function () {
     Livewire::test(ListAttachments::class)
-        ->mountAction('upload')
+        ->mountAction('attachment-upload')
         ->assertSee('Upload')
-        ->fillForm([
+        ->setActionData([
             'attachments' => [
                 UploadedFile::fake()->image('rgb.jpeg'),
             ],
-        ], 'mountedActionForm')
-        ->goToNextWizardStep('mountedActionForm')
+        ])
+        ->goToNextWizardStep()
         ->assertHasNoActionErrors([
             'attachments',
         ]);
