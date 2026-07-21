@@ -139,7 +139,7 @@
 
                 {{-- Formats --}}
                 <div class="lg:w-2/6 gallery-container lg:h-[70vh] flex flex-col">
-                    <h3 class="text-lg font-bold mb-2">{{ $attachment->filename }}</h3>
+                    <h3 class="text-lg font-bold mb-2 truncate">{{ $attachment->filename }}</h3>
 
                     <p class="mb-1">
                         <span x-text="currentFormat.name" class="font-bold"></span> -

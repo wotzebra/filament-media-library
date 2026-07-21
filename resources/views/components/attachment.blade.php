@@ -15,7 +15,7 @@
     <div class="flex-grow flex justify-between gap-2">
         {{-- Title --}}
         @if ($showTitle)
-            <p class="font-bold text-xs mb-2 line-clamp-1 border-primary-600" title="{{ $attachment->filename }}">
+            <p class="font-bold text-xs mb-2 truncate border-primary-600" title="{{ $attachment->filename }}">
                 {{ $attachment->filename }}
             </p>
         @endif
