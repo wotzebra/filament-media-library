@@ -32,19 +32,25 @@
 - [UploadedFile Mixin]('#uploaded-file-mixin)
     * [Save Attachment]('#save-attachment)
     * [Create from URL]('#create-from-url)
+- [Versioning](#versioning)
+    * [Configuration](#versioning-configuration)
+    * [Replace a file](#replace-a-file)
+    * [Revert to a previous version](#revert-to-a-previous-version)
+    * [Events](#versioning-events)
+    * [Custom resource pages](#versioning-in-custom-resource-pages)
 
 ## Installation
 
 First, install this package via composer:
 
 ```bash
-composer require codedor/filament-media-library
+composer require wotz/filament-media-library
 ```
 
 Then publish the assets with
 
 ```bash
-php artisan vendor:publish --provider "Codedor\MediaLibrary\Providers\MediaLibraryServiceProvider"
+php artisan vendor:publish --provider "Wotz\MediaLibrary\Providers\MediaLibraryServiceProvider"
 ```
 
 and lastly, run the migrations:
@@ -61,7 +67,7 @@ The basic config file consists of the following contents:
 
 ```php
 return [
-    'conversion' => \Codedor\MediaLibrary\Conversions\LocalConversion::class,
+    'conversion' => \Wotz\MediaLibrary\Conversions\LocalConversion::class,
     'enable-format-generate-action' => true,
     'force-format-extension' => [
         'extension' => 'webp',
@@ -149,11 +155,11 @@ canvas options used while cropping.
 
 ### S3 support
 
-To use S3 as a storage, you can use the `Codedor\MediaLibrary\Conversions\S3Conversion` class.
+To use S3 as a storage, you can use the `Wotz\MediaLibrary\Conversions\S3Conversion` class.
 
 ```php
 return [
-    'conversion' => \Codedor\MediaLibrary\Conversions\S3Conversion::class,
+    'conversion' => \Wotz\MediaLibrary\Conversions\S3Conversion::class,
     // ...
 ];
 ```
@@ -182,14 +188,14 @@ return [
 
 ### Register models
 
-Any model that contains formats should be registered and implement the `Codedor\MediaLibrary\Interfaces\HasFormats`
+Any model that contains formats should be registered and implement the `Wotz\MediaLibrary\Interfaces\HasFormats`
 interface.
 
-Formats must be registered via the `Codedor\MediaLibrary\Facades\Formats` facade to be visible in the formatter.
+Formats must be registered via the `Wotz\MediaLibrary\Facades\Formats` facade to be visible in the formatter.
 
 ```php
 use App\Formats;
-use Codedor\MediaLibrary\Facades\Formats;
+use Wotz\MediaLibrary\Facades\Formats;
 
 public function boot()
 {
@@ -204,7 +210,7 @@ public function boot()
 
 ### Creating formats
 
-Create a new PHP class that extends the `Codedor\MediaLibrary\Formats\Format` class.
+Create a new PHP class that extends the `Wotz\MediaLibrary\Formats\Format` class.
 
 ```php
 <?php
@@ -239,7 +245,7 @@ Formats are tightly coupled with models. This way, specific formats can be fetch
 
 #### Preparing your model
 
-A model should implement the `Codedor\MediaLibrary\Interfaces\HasFormats` interface which contains the `getFormats`
+A model should implement the `Wotz\MediaLibrary\Interfaces\HasFormats` interface which contains the `getFormats`
 method.
 
 ```php
@@ -259,7 +265,7 @@ public static function getFormats(Collection $formats): Collection
 Retrieve the Filesystem of the attachment
 
 ```php
-use Codedor\MediaLibrary\Models\Attachment;
+use Wotz\MediaLibrary\Models\Attachment;
 
 /** @var Illuminate\Contracts\Filesystem $filesystem */
 $filesystem = Attachment::first()->getStorage();
@@ -270,7 +276,7 @@ $filesystem = Attachment::first()->getStorage();
 Retrieve the url for the file of the given format. Returns the original file if the given format is not found.
 
 ```php
-use Codedor\MediaLibrary\Models\Attachment;
+use Wotz\MediaLibrary\Models\Attachment;
 
 /** @var string $url */
 $url = Attachment::first()->getFormatOrOriginal('hero');
@@ -285,7 +291,7 @@ $url = Attachment::first()->getFormatOrOriginal('hero');
 Retrieve the url for the file of the given format. Returns null if the given format is not found.
 
 ```php
-use Codedor\MediaLibrary\Models\Attachment;
+use Wotz\MediaLibrary\Models\Attachment;
 
 /** @var string|null $url */
 $url = Attachment::first()->getFormat('hero');
@@ -300,7 +306,7 @@ $url = Attachment::first()->getFormat('hero');
 Retrieve the url to the original file
 
 ```php
-use Codedor\MediaLibrary\Models\Attachment;
+use Wotz\MediaLibrary\Models\Attachment;
 
 /** @var string $url */
 $url = Attachment::first()->url;
@@ -313,7 +319,7 @@ $url = Attachment::first()->url;
 Retrieve the filename with extension.
 
 ```php
-use Codedor\MediaLibrary\Models\Attachment;
+use Wotz\MediaLibrary\Models\Attachment;
 
 /** @var string $url */
 $url = Attachment::first()->filename;
@@ -382,7 +388,7 @@ This field will give the option to upload or select an already existing image.
 The ID will be stored in de column provided in the `make` method.
 
 ```php
-use Codedor\MediaLibrary\Components\Fields\AttachmentInput;
+use Wotz\MediaLibrary\Components\Fields\AttachmentInput;
 
 AttachmentInput::make('profile_image_id')
     ->label('Profile Image')
@@ -393,7 +399,7 @@ This field inherits the `Filament\Forms\Components\Field` class which means that
 #### Multiple attachments
 
 ```php
-use Codedor\MediaLibrary\Components\Fields\AttachmentInput;
+use Wotz\MediaLibrary\Components\Fields\AttachmentInput;
 
 AttachmentInput::make('profile_image_id')
     ->multiple()
@@ -406,7 +412,7 @@ If you want to override this, you can use the `allowedFormats` method.
 
 ```php
 use App\Formats\Hero;
-use Codedor\MediaLibrary\Components\Fields\AttachmentInput;
+use Wotz\MediaLibrary\Components\Fields\AttachmentInput;
 
 AttachmentInput::make('profile_image_id')
     ->allowedFormats([
@@ -419,7 +425,7 @@ AttachmentInput::make('profile_image_id')
 This column for a table will render the image with the thumbnail format or an icon if attachment is not an image.
 
 ```php
-\Codedor\MediaLibrary\Tables\Columns\AttachmentColumn::make('image_id'),
+\Wotz\MediaLibrary\Tables\Columns\AttachmentColumn::make('image_id'),
 ```
 
 ### AttachmentEntry
@@ -427,7 +433,7 @@ This column for a table will render the image with the thumbnail format or an ic
 This entry for an info list will render the image with the thumbnail format or an icon if attachment is not an image.
 
 ```php
-\Codedor\MediaLibrary\Filament\Entries\AttachmentEntry::make('image'),
+\Wotz\MediaLibrary\Filament\Entries\AttachmentEntry::make('image'),
 ```
 
 
@@ -470,6 +476,165 @@ To convert an url to an attachment, you simply call the `createFromUrl()` method
 $uploadedFile = \Illuminate\Http\UploadedFile::createFromUrl('https://example.com/image.jpg');
 
 $attachment = $uploadedFile->save();
+```
+
+## Versioning
+
+The package supports file versioning out of the box. When a file is replaced, the previous version is archived and can be restored at any time.
+
+### Versioning Configuration
+
+The versioning behaviour can be configured in `config/filament-media-library.php`:
+
+```php
+'versioning' => [
+    'keep_versions' => 5, // Number of previous versions to keep per attachment
+    'max_file_size' => null, // Maximum size in kilobytes for a replacement file. `null` means no limit.
+],
+```
+
+Old versions beyond the `keep_versions` limit are automatically pruned (both the database record and the stored files).
+
+Replacement files are validated against the extensions listed under `extensions` in the same config file.
+
+### Replace a file
+
+The `Attachment` model uses the `HasVersions` trait, which provides a `replaceFile` method:
+
+```php
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use Wotz\MediaLibrary\Models\Attachment;
+
+/** @var TemporaryUploadedFile $file */
+Attachment::find($id)->replaceFile($file);
+```
+
+Calling `replaceFile` will:
+1. Archive the current file and its metadata as a new `AttachmentVersion` snapshot.
+2. Move the existing files to a versioned subdirectory (`attachments/{id}/versions/{version_number}`).
+3. Store the new file, increment the `version` counter, and regenerate all image formats.
+4. Fire an `AttachmentReplaced` event.
+
+In the Filament admin panel, the **Replace file** button is available on the attachment edit page.
+
+### Revert to a previous version
+
+```php
+use Wotz\MediaLibrary\Models\Attachment;
+use Wotz\MediaLibrary\Models\AttachmentVersion;
+
+$attachment = Attachment::find($id);
+
+/** @var AttachmentVersion $version */
+$version = $attachment->versions->first();
+
+$attachment->revertToVersion($version);
+```
+
+Calling `revertToVersion` will:
+1. Archive the current state as a new version snapshot.
+2. Restore the files from the selected version directory.
+3. Restore the format data that was saved with that version.
+4. Delete the reverted version record and prune old versions.
+5. Fire an `AttachmentReverted` event.
+
+It throws before touching anything when the version cannot be restored safely:
+
+| Exception | Thrown when |
+|---|---|
+| `VersionDoesNotBelongToAttachment` | The given version belongs to another attachment |
+| `VersionFilesMissing` | The version's directory no longer holds any files |
+
+Both `replaceFile` and `revertToVersion` run their database writes in a transaction and put the previous files back when a step fails, so a failed call leaves the attachment on its original file.
+
+In the Filament admin panel, the **Version history** dropdown on the attachment edit page lists all available previous versions. Each entry shows the filename and the date/time it was replaced. A version whose files are no longer stored reports a notification rather than an error.
+
+Both the **Replace file** and the revert actions redirect back to the page when they succeed. Filament caches its header actions at boot, so without that redirect the version history would keep listing the versions from before the action.
+
+### Listing versions
+
+```php
+$attachment->versions; // Collection of AttachmentVersion, ordered by version_number descending
+```
+
+Each `AttachmentVersion` has the following attributes:
+
+| Attribute | Description |
+|---|---|
+| `version_number` | The version counter at the time of archiving |
+| `name` | File name (without extension) |
+| `extension` | File extension |
+| `mime_type` | MIME type |
+| `size` | File size in bytes |
+| `width` / `height` | Image dimensions (nullable) |
+| `disk` | Storage disk |
+| `format_data` | Serialised format crop data |
+| `replaced_by_user_id` | ID of the user who replaced the file (nullable) |
+| `replaced_at` | Timestamp when the file was replaced |
+
+### Versioning Events
+
+Two events are dispatched during versioning:
+
+#### `AttachmentReplaced`
+
+Fired after a file has been successfully replaced.
+
+```php
+use Wotz\MediaLibrary\Events\AttachmentReplaced;
+
+Event::listen(AttachmentReplaced::class, function (AttachmentReplaced $event) {
+    $event->attachment;       // The updated Attachment model
+    $event->previousVersion;  // The AttachmentVersion snapshot that was created
+});
+```
+
+#### `AttachmentReverted`
+
+Fired after an attachment has been reverted to a previous version.
+
+```php
+use Wotz\MediaLibrary\Events\AttachmentReverted;
+
+Event::listen(AttachmentReverted::class, function (AttachmentReverted $event) {
+    $event->attachment;      // The updated Attachment model
+    $event->revertedVersion; // The AttachmentVersion that was restored
+});
+```
+
+### Versioning in custom resource pages
+
+If you create a custom Filament resource page for attachments, you can add the versioning actions by using the `HasVersionHistory` concern:
+
+```php
+use Filament\Resources\Pages\EditRecord;
+use Wotz\MediaLibrary\Resources\Concerns\HasVersionHistory;
+
+class EditMyAttachment extends EditRecord
+{
+    use HasVersionHistory;
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            $this->getReplaceFileAction(),
+            $this->getVersionHistoryAction(),
+        ];
+    }
+}
+```
+
+You can also use the actions independently:
+
+```php
+use Wotz\MediaLibrary\Filament\Actions\ReplaceAttachmentAction;
+use Wotz\MediaLibrary\Filament\Actions\VersionHistoryAction;
+
+// A standalone action for the page header
+ReplaceAttachmentAction::make('replaceFile');
+
+// An action group listing all previous versions
+VersionHistoryAction::make($this->getRecord());
 ```
 
 ## Generate new media format

@@ -1,12 +1,12 @@
 <?php
 
-namespace Codedor\MediaLibrary\Conversions;
+namespace Wotz\MediaLibrary\Conversions;
 
-use Codedor\MediaLibrary\Formats\Format;
-use Codedor\MediaLibrary\Models\Attachment;
-use Codedor\MediaLibrary\Support\TemporaryDirectory;
 use Illuminate\Support\Str;
 use Spatie\Image\Image;
+use Wotz\MediaLibrary\Formats\Format;
+use Wotz\MediaLibrary\Models\Attachment;
+use Wotz\MediaLibrary\Support\TemporaryDirectory;
 
 class S3Conversion implements Conversion
 {
@@ -29,6 +29,13 @@ class S3Conversion implements Conversion
 
         $formatPath = "$attachment->directory/$formatName";
 
+        // Check if there's an existing manual crop for this format
+        $existingFormat = $attachment->formats()
+            ->where('format', $format->key())
+            ->first();
+
+        $hasManualCrop = $existingFormat && ! empty($existingFormat->data) && is_array($existingFormat->data);
+
         if (
             $force ||
             ! $attachment->getStorage()->exists($formatPath)
@@ -41,6 +48,22 @@ class S3Conversion implements Conversion
 
             $image = Image::load($tempPath);
 
+            // Apply manual crop coordinates if they exist
+            if ($hasManualCrop) {
+                $cropData = $existingFormat->data;
+
+                // Apply crop transformation using the saved coordinates
+                if (isset($cropData['x'], $cropData['y'], $cropData['width'], $cropData['height'])) {
+                    $image->manualCrop(
+                        (int) $cropData['width'],
+                        (int) $cropData['height'],
+                        (int) $cropData['x'],
+                        (int) $cropData['y']
+                    );
+                }
+            }
+
+            // Apply format-specific manipulations
             $format->definition()->apply($image);
 
             $image->save($tempPath);

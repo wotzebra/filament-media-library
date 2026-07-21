@@ -1,6 +1,6 @@
 <?php
 
-use Codedor\MediaLibrary\Conversions\LocalConversion;
+use Wotz\MediaLibrary\Conversions\LocalConversion;
 
 return [
     'conversion' => LocalConversion::class,
@@ -41,4 +41,10 @@ return [
         ],
     ],
     'temporary_directory_path' => storage_path('filament-media-library/tmp'),
+
+    'versioning' => [
+        'keep_versions' => 5,
+        // Maximum size in kilobytes for a replacement file. `null` means no limit.
+        'max_file_size' => null,
+    ],
 ];

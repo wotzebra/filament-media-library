@@ -1,7 +1,7 @@
 <?php
 
-use Codedor\MediaLibrary\Models\Attachment;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Wotz\MediaLibrary\Models\Attachment;
 
 uses(RefreshDatabase::class);
 

@@ -1,12 +1,13 @@
 <?php
 
-use Codedor\MediaLibrary\Jobs\GenerateAttachmentFormat;
-use Codedor\MediaLibrary\Models\Attachment;
-use Codedor\MediaLibrary\Tests\TestFormats\TestHero;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
+use Wotz\MediaLibrary\Facades\Formats;
+use Wotz\MediaLibrary\Jobs\GenerateAttachmentFormat;
+use Wotz\MediaLibrary\Models\Attachment;
+use Wotz\MediaLibrary\Tests\TestFormats\TestHero;
 
 use function Pest\Laravel\assertDatabaseCount;
 use function Pest\Laravel\assertDatabaseHas;
@@ -17,7 +18,7 @@ it('dispatches format generation', function () {
     Queue::fake();
     Storage::fake('public');
 
-    \Codedor\MediaLibrary\Facades\Formats::register([
+    Formats::register([
         TestHero::class,
     ]);
 
@@ -36,7 +37,7 @@ it('can save an image on default public disk', function () {
     Queue::fake();
     Storage::fake('public');
 
-    \Codedor\MediaLibrary\Facades\Formats::register([
+    Formats::register([
         TestHero::class,
     ]);
 
@@ -70,7 +71,7 @@ it('can save an image on default other disk', function () {
     Queue::fake();
     $disk = 'local';
 
-    \Codedor\MediaLibrary\Facades\Formats::register([
+    Formats::register([
         TestHero::class,
     ]);
 

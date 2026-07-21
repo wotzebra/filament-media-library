@@ -8,4 +8,7 @@ return [
     'attachment information step title' => 'Attachment information',
     'attachment information step intro' => 'Add information about your attachment(s) here',
     'select tags' => 'Select tags',
+    'name' => 'Name',
+    'alt text' => 'Alt Text',
+    'caption' => 'Caption',
 ];

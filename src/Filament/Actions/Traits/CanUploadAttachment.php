@@ -1,23 +1,23 @@
 <?php
 
-namespace Codedor\MediaLibrary\Filament\Actions\Traits;
+namespace Wotz\MediaLibrary\Filament\Actions\Traits;
 
 use Closure;
-use Codedor\MediaLibrary\Models\Attachment;
-use Codedor\MediaLibrary\Models\AttachmentTag;
-use Codedor\TranslatableTabs\Forms\TranslatableTabs;
-use Filament\Forms\Components\Component;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Placeholder;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Wizard\Step;
-use Filament\Forms\Get;
-use Filament\Forms\Set;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Notifications\Notification;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
+use Filament\Schemas\Components\Wizard\Step;
 use Illuminate\Support\Arr;
+use Livewire\Component;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use Wotz\MediaLibrary\Models\Attachment;
+use Wotz\MediaLibrary\Models\AttachmentTag;
+use Wotz\TranslatableTabs\Forms\TranslatableTabs;
 
 trait CanUploadAttachment
 {
@@ -27,53 +27,7 @@ trait CanUploadAttachment
     {
         parent::setUp();
 
-        $this->label(__('filament-media-library::upload.upload attachment'));
-
-        $this->steps([
-            $this->getUploadStep(),
-            $this->getAttachmentInformationStep(),
-        ]);
-
-        $this->action(function (array $data, Set $set, Component $component) {
-            $attachmentIds = collect($data['attachments'] ?? [])
-                ->map(function (string $attachmentId) use ($data) {
-                    $attachment = Attachment::find($attachmentId);
-
-                    if (! $attachment) {
-                        return null;
-                    }
-
-                    $meta = $data['meta'][$attachment->md5] ?? [];
-
-                    if (! $meta) {
-                        return $attachmentId;
-                    }
-
-                    $attachment->update($this->mutateData($meta));
-
-                    if (array_key_exists('tags', $meta)) {
-                        $attachment->tags()->sync($meta['tags']);
-                    }
-
-                    return $attachment->id;
-                })
-                ->filter();
-
-            Notification::make()
-                ->title(__('filament-media-library::upload.upload successful'))
-                ->success()
-                ->send();
-
-            // Set the state if this is a field
-            if ($this instanceof \Filament\Forms\Components\Actions\Action) {
-                $set(
-                    $component->getStatePath(false),
-                    $this->isMultiple()
-                        ? collect($component->getState())->concat($attachmentIds)->toArray()
-                        : $attachmentIds->first()
-                );
-            }
-        })->closeModalByClickingAway(false);
+        $this->configureAction();
     }
 
     public function multiple(bool|Closure $multiple = true): static
@@ -95,7 +49,7 @@ trait CanUploadAttachment
             ->afterValidation(function (Get $get, Set $set) {
                 foreach (Arr::wrap($get('attachments')) as $file) {
                     if ($file instanceof TemporaryUploadedFile) {
-                        $md5 = md5($file->hashName());
+                        $md5 = md5($file->getClientOriginalName());
 
                         $set("meta.{$md5}.name", '');
                         $set("meta.{$md5}.tags", []);
@@ -124,11 +78,12 @@ trait CanUploadAttachment
                 return collect($state['attachments'] ?? [])
                     ->filter(fn ($upload) => $upload instanceof TemporaryUploadedFile)
                     ->map(function ($upload) use ($get) {
-                        $md5 = md5($upload->hashName());
+                        $md5 = md5($upload->getClientOriginalName());
 
                         $defaultFields = [
-                            Placeholder::make('name')
-                                ->content(fn () => $upload->getClientOriginalName()),
+                            TextEntry::make('name')
+                                ->state(fn () => $upload->getClientOriginalName())
+                                ->label(__('filament-media-library::upload.name')),
                         ];
 
                         if (! is_null($get("meta.{$md5}.tags"))) {
@@ -136,10 +91,13 @@ trait CanUploadAttachment
                                 ->label(__('filament-media-library::upload.select tags'))
                                 ->multiple()
                                 ->default([])
-                                ->options(AttachmentTag::all()->pluck('title', 'id')->toArray());
+                                ->hidden(fn (Select $component): bool => ! $component->getOptions())
+                                ->options(AttachmentTag::all()->pluck('title', 'id')->toArray())
+                                ->disabled(fn (Select $component): bool => ! $component->getOptions());
                         }
 
-                        return Section::make($upload->getClientOriginalName())
+                        return Section::make()
+                            ->description($upload->getClientOriginalName())
                             ->collapsible()
                             ->columns()
                             ->schema([
@@ -147,17 +105,14 @@ trait CanUploadAttachment
                                     ->statePath("meta.{$md5}")
                                     ->icon('heroicon-o-signal')
                                     ->columnSpan(['lg' => 2])
-                                    ->persistInQueryString(false)
+                                    ->persistTabInQueryString(false)
                                     ->defaultFields($defaultFields)
                                     ->translatableFields(fn () => [
-                                        // TextInput::make('translated_name')
-                                        //     ->suffix('.' . $upload->getClientOriginalExtension())
-                                        //     ->dehydrateStateUsing(fn ($state) => Str::slug($state)),
-
                                         TextInput::make('alt')
-                                            ->label('Alt text'),
+                                            ->label(__('filament-media-library::upload.alt text')),
 
-                                        TextInput::make('caption'),
+                                        TextInput::make('caption')
+                                            ->label(__('filament-media-library::upload.caption')),
                                     ]),
                             ]);
                     })
@@ -169,6 +124,7 @@ trait CanUploadAttachment
     protected function mutateData(array $data): array
     {
         $model = app($this->getModel());
+
         foreach (Arr::except($data, $model->getFillable()) as $locale => $values) {
             if (! is_array($values)) {
                 continue;
@@ -179,6 +135,56 @@ trait CanUploadAttachment
             }
         }
 
-        return $data;
+        return Arr::only($data, $model->getTranslatableAttributes());
+    }
+
+    protected function saveAttachmentsAndSendNotification(Component $livewire): void
+    {
+        $data = collect($livewire->mountedActions)->first(fn (array $action) => $action['name'] === $this->getName())['data'] ?? [];
+
+        collect($data['attachments'] ?? [])
+            ->map(function (string $attachmentId) use ($data) {
+                $attachment = Attachment::find($attachmentId);
+
+                if (! $attachment) {
+                    return null;
+                }
+
+                $meta = $data['meta'][md5($attachment->filename)] ?? [];
+
+                if (! $meta) {
+                    return $attachmentId;
+                }
+
+                $attachment->update($this->mutateData($meta));
+
+                if (array_key_exists('tags', $meta)) {
+                    $attachment->tags()->sync($meta['tags']);
+                }
+
+                return $attachment->id;
+            })
+            ->filter();
+
+        Notification::make()
+            ->title(__('filament-media-library::upload.upload successful'))
+            ->success()
+            ->send();
+    }
+
+    public function configureAction(): void
+    {
+        $this->label(__('filament-media-library::upload.upload attachment'));
+
+        $this->name('attachment-upload');
+
+        $this->steps([
+            $this->getUploadStep(),
+            $this->getAttachmentInformationStep(),
+        ]);
+
+        $this->closeModalByClickingAway(false);
+
+        $this->action(fn (Component $livewire) => $this->saveAttachmentsAndSendNotification($livewire));
     }
 }

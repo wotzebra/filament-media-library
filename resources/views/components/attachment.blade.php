@@ -12,7 +12,7 @@
 ])
 
 <div @class(['flex flex-col h-full', $containerClass])>
-    <div class="flex-grow flex justify-between gap-2">
+    <div class="grow flex justify-between gap-2">
         {{-- Title --}}
         @if ($showTitle)
             <p class="font-bold text-xs mb-2 line-clamp-1 border-primary-600" title="{{ $attachment->filename }}">
@@ -88,7 +88,7 @@
             overflow-hidden bg-center bg-contain bg-no-repeat bg-gray-200 dark:bg-gray-800 media
         ']) }}
     >
-        <abbr class="absolute inset-0 z-[1]" title="{{ $attachment->filename }}">
+        <abbr class="absolute inset-0 z-1" title="{{ $attachment->filename }}">
             <span class="invisible">{{ $attachment->filename }}</span>
         </abbr>
         @if($attachment->type !== 'image')
