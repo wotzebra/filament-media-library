@@ -1,19 +1,15 @@
 <?php
 
-namespace Codedor\MediaLibrary\Formats;
+namespace Wotz\MediaLibrary\Formats;
 
-use Codedor\MediaLibrary\Models\Attachment;
 use Spatie\Image\Drivers\ImageDriver;
+use Wotz\MediaLibrary\Models\Attachment;
 
 class Lazyload extends Format
 {
     public bool $shownInFormatter = false;
 
     protected string $name = 'Lazyload';
-
-    protected string $description = 'Used as placeholder for lazy loaded images. These will only be
-        shown for a short amount of time (and blurred) before the high quality image is loaded. This improves
-        performance and load times.';
 
     public function definition(): Manipulations|ImageDriver
     {
@@ -23,5 +19,10 @@ class Lazyload extends Format
     public function registerModelsForFormatter(): void
     {
         $this->registerFor(Attachment::class);
+    }
+
+    public function description(): string
+    {
+        return __('filament-media-library::formats.lazyload description');
     }
 }

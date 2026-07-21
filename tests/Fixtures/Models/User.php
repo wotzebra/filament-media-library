@@ -1,8 +1,8 @@
 <?php
 
-namespace Codedor\MediaLibrary\Tests\Fixtures\Models;
+namespace Wotz\MediaLibrary\Tests\Fixtures\Models;
 
-use Codedor\MediaLibrary\Tests\Fixtures\Database\Factories\UserFactory;
+use Wotz\MediaLibrary\Tests\Fixtures\Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

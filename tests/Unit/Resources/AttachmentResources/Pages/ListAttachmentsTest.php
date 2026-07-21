@@ -1,8 +1,8 @@
 <?php
 
-use Codedor\MediaLibrary\Resources\AttachmentResource\Pages\ListAttachments;
-use Codedor\MediaLibrary\Support\FileUploadConfig;
-use Codedor\MediaLibrary\Tests\Fixtures\Models\User;
+use Wotz\MediaLibrary\Resources\AttachmentResource\Pages\ListAttachments;
+use Wotz\MediaLibrary\Support\FileUploadConfig;
+use Wotz\MediaLibrary\Tests\Fixtures\Models\User;
 use Illuminate\Http\UploadedFile;
 
 use function Pest\Livewire\livewire;

@@ -5,6 +5,45 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+### What's Changed
+
+* E20-137 Add attachment versioning: replace files and revert to previous versions
+* `EditAttachment` now declares its header actions through `getHeaderActions()` instead of the deprecated `getActions()` hook. No visible change: the `DeleteAction` was already rendered through the deprecated path.
+* `Attachment::$url` now carries a `?v={version}` cache buster once a file has been replaced, so a replacement with an identical filename is no longer served from cache. Temporary (signed) urls are unaffected.
+* Reverting a version whose files are no longer stored now reports a notification instead of an uncaught `VersionFilesMissing`. This happens when the attachment was already broken when it got replaced, so nothing was ever archived.
+* The replace and revert actions redirect back to the page on success. Filament caches header actions at boot, so the version history dropdown kept listing the versions from before the action until the page was reloaded by hand.
+
+---
+
+## v4.0.1 - 2026-02-18
+
+### What's Changed
+
+* Formatter updates so we can save in higher quality
+
+**Full Changelog**: https://github.com/codedor/filament-media-library/compare/v4.0.0...v4.0.1
+
+## v4.0.0 - 2026-01-20
+
+### What's Changed
+
+* Bump dependabot/fetch-metadata from 2.4.0 to 2.5.0 by @dependabot[bot] in https://github.com/codedor/filament-media-library/pull/71
+* Bump actions/checkout from 5 to 6 by @dependabot[bot] in https://github.com/codedor/filament-media-library/pull/70
+* Upgrade to Filament v4 by @jyrkidn in https://github.com/codedor/filament-media-library/pull/57
+* Upgrade to Filament v4 by @jyrkidn in https://github.com/codedor/filament-media-library/pull/69
+
+**Full Changelog**: https://github.com/codedor/filament-media-library/compare/v3.1.0...v4.0.0
+
+## v3.1.0 - 2025-11-20
+
+### What's Changed
+
+* Add translatable strings by @jyrkidn in https://github.com/codedor/filament-media-library/pull/55
+* Bump actions/checkout from 4 to 5 by @dependabot[bot] in https://github.com/codedor/filament-media-library/pull/61
+* Bump stefanzweifel/git-auto-commit-action from 5 to 7 by @dependabot[bot] in https://github.com/codedor/filament-media-library/pull/65
+
+**Full Changelog**: https://github.com/codedor/filament-media-library/compare/v3.0.4...v3.1.0
+
 ## v3.0.4 - 2025-09-11
 
 ### What's Changed

@@ -1,6 +1,6 @@
 <?php
 
-namespace Codedor\MediaLibrary\Formats;
+namespace Wotz\MediaLibrary\Formats;
 
 use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Enums\AlignPosition;
@@ -10,7 +10,7 @@ use Spatie\Image\Enums\CropPosition;
 use Spatie\Image\Enums\Fit;
 use Spatie\Image\Enums\FlipDirection;
 
-/** @mixin \Spatie\Image\Drivers\ImageDriver */
+/** @mixin ImageDriver */
 class Manipulations
 {
     protected array $manipulations = [];

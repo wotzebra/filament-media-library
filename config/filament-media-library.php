@@ -1,6 +1,6 @@
 <?php
 
-use Codedor\MediaLibrary\Conversions\LocalConversion;
+use Wotz\MediaLibrary\Conversions\LocalConversion;
 
 return [
     'conversion' => LocalConversion::class,
@@ -42,5 +42,11 @@ return [
         'max_file_size' => 50000, // In KB, so 50 MB
         'max_height' => 2400,
         'max_width' => 4000,
+    ],
+
+    'versioning' => [
+        'keep_versions' => 5,
+        // Maximum size in kilobytes for a replacement file. `null` means no limit.
+        'max_file_size' => null,
     ],
 ];

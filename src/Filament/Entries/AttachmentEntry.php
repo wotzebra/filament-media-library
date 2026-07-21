@@ -1,6 +1,6 @@
 <?php
 
-namespace Codedor\MediaLibrary\Filament\Entries;
+namespace Wotz\MediaLibrary\Filament\Entries;
 
 use Filament\Infolists\Components\Entry;
 

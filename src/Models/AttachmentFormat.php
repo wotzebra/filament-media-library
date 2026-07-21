@@ -1,14 +1,16 @@
 <?php
 
-namespace Codedor\MediaLibrary\Models;
+namespace Wotz\MediaLibrary\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property string $attachment_id
  * @property string $format
- * @property \Carbon\Carbon $updated_at
+ * @property array<mixed>|null $data
+ * @property Carbon $updated_at
  */
 class AttachmentFormat extends Model
 {

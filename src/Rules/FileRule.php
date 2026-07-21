@@ -1,9 +1,9 @@
 <?php
 
-namespace Codedor\MediaLibrary\Rules;
+namespace Wotz\MediaLibrary\Rules;
 
 use Closure;
-use Codedor\MediaLibrary\Support\FileUploadConfig;
+use Wotz\MediaLibrary\Support\FileUploadConfig;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Support\Number;
 use Symfony\Component\HttpFoundation\File\UploadedFile;

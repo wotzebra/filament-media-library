@@ -1,0 +1,25 @@
+<?php
+
+return [
+    'name' => 'Name',
+    'alt text' => 'Alt Text',
+    'caption' => 'Caption',
+    'created at' => 'Created At',
+    'extension' => 'Extension',
+    'mime type' => 'Mime Type',
+    'type' => 'Type',
+    'size' => 'File size',
+    'width' => 'Width',
+    'height' => 'Height',
+    'tags' => 'Tags',
+    'image' => 'Image',
+    'disk' => 'Disk',
+    'format' => 'Format',
+    'generate formats' => 'Generate formats',
+    'title' => 'Title',
+    'parent' => 'Parent',
+    'is hidden' => 'Is Hidden',
+    'is hidden help text' => 'Hide images with this tag from the media library and picker',
+    'attachment tags title' => 'Attachment tags',
+    'attachment tags title singular' => 'Attachment tag',
+];

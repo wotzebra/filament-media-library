@@ -1,16 +1,17 @@
 <?php
 
-namespace Codedor\MediaLibrary\Tests;
+namespace Wotz\MediaLibrary\Tests;
 
 use BladeUI\Heroicons\BladeHeroiconsServiceProvider;
 use BladeUI\Icons\BladeIconsServiceProvider;
-use Codedor\MediaLibrary\Filament\MediaLibraryPlugin;
-use Codedor\MediaLibrary\Providers\MediaLibraryServiceProvider;
 use Filament\Actions\ActionsServiceProvider;
+use Filament\Facades\Filament;
 use Filament\FilamentServiceProvider;
 use Filament\Forms\FormsServiceProvider;
 use Filament\Infolists\InfolistsServiceProvider;
 use Filament\Notifications\NotificationsServiceProvider;
+use Filament\Panel;
+use Filament\Schemas\SchemasServiceProvider;
 use Filament\Support\SupportServiceProvider;
 use Filament\Tables\TablesServiceProvider;
 use Filament\Widgets\WidgetsServiceProvider;
@@ -18,65 +19,70 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithViews;
 use Livewire\LivewireServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
-use RyanChandler\BladeCaptureDirective\BladeCaptureDirectiveServiceProvider;
-use Spatie\Image\Manipulations;
+use Spatie\Translatable\TranslatableServiceProvider;
+use Wotz\MediaLibrary\Filament\MediaLibraryPlugin;
+use Wotz\MediaLibrary\Providers\MediaLibraryServiceProvider;
+use Wotz\TranslatableTabs\Providers\TranslatableTabsServiceProvider;
 
 class TestCase extends Orchestra
 {
     use InteractsWithViews;
-
-    public Manipulations $manipulations;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'Codedor\\FilamentRedirects\\Database\\Factories\\' . class_basename($modelName) . 'Factory'
+            fn (string $modelName) => 'Wotz\\MediaLibrary\\Tests\\Fixtures\\Database\\Factories\\' . class_basename($modelName) . 'Factory'
         );
     }
 
     public function getEnvironmentSetUp($app)
     {
-        $app['config']->set('database.default', 'sqlite');
-        $app['config']->set('database.connections.sqlite', [
-            'driver' => 'sqlite',
-            'database' => ':memory:',
-            'prefix' => '',
-        ]);
+        config()->set('database.default', 'testing');
 
-        $panel = new \Filament\Panel;
+        $panel = new Panel;
         $panel
             ->id('resource-test')
             ->default(true)
             ->plugin(MediaLibraryPlugin::make());
 
-        \Filament\Facades\Filament::registerPanel($panel);
-
+        Filament::registerPanel($panel);
     }
 
     protected function getPackageProviders($app)
     {
-        return [
+        $providers = [
+            LivewireServiceProvider::class,
+            TranslatableTabsServiceProvider::class,
             ActionsServiceProvider::class,
-            BladeCaptureDirectiveServiceProvider::class,
             BladeHeroiconsServiceProvider::class,
             BladeIconsServiceProvider::class,
             FilamentServiceProvider::class,
             FormsServiceProvider::class,
             InfolistsServiceProvider::class,
-            LivewireServiceProvider::class,
             NotificationsServiceProvider::class,
+            SchemasServiceProvider::class,
             SupportServiceProvider::class,
             TablesServiceProvider::class,
             WidgetsServiceProvider::class,
             MediaLibraryServiceProvider::class,
+            TranslatableServiceProvider::class,
         ];
+
+        sort($providers);
+
+        return $providers;
     }
 
     protected function defineDatabaseMigrations(): void
     {
-        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations/2022_08_03_120355_create_attachments_table.php');
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations/2022_08_03_120356_create_attachment_tags_table.php');
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations/2022_08_03_120357_create_attachment_attachment_tags_table.php');
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations/2023_04_27_120359_create_attachment_formats.php');
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations/2025_01_30_130345_add_is_hidden_to_attachment_tags.php');
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations/2026_02_27_000001_add_versioning_to_attachments.php');
 
         $this->loadMigrationsFrom(__DIR__ . '/Fixtures/Database/migrations/create_users_table.php');
     }

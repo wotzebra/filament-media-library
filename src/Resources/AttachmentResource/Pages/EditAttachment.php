@@ -1,22 +1,26 @@
 <?php
 
-namespace Codedor\MediaLibrary\Resources\AttachmentResource\Pages;
+namespace Wotz\MediaLibrary\Resources\AttachmentResource\Pages;
 
-use Codedor\MediaLibrary\Resources\AttachmentResource;
-use Codedor\TranslatableTabs\Resources\Traits\HasTranslations;
-use Filament\Pages\Actions;
+use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
+use Wotz\MediaLibrary\Resources\AttachmentResource;
+use Wotz\MediaLibrary\Resources\Concerns\HasVersionHistory;
+use Wotz\TranslatableTabs\Resources\Traits\HasTranslations;
 
 class EditAttachment extends EditRecord
 {
     use HasTranslations;
+    use HasVersionHistory;
 
     protected static string $resource = AttachmentResource::class;
 
-    protected function getActions(): array
+    protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            $this->getReplaceFileAction(),
+            $this->getVersionHistoryAction(),
+            DeleteAction::make(),
         ];
     }
 }

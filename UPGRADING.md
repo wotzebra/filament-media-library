@@ -1,5 +1,10 @@
 # Upgrading
 
+## From v3 to v4
+
+- Install `wotz/filament-media-library` instead of `codedor/filament-media-library`
+- Replace all occurrences of `Codedor\MediaLibrary` namespace with new `Wotz\MediaLibrary` namespace
+
 ## From v2 to v3
 
 ### Video not allowed anymore

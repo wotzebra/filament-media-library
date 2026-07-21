@@ -1,10 +1,10 @@
 <?php
 
-namespace Codedor\MediaLibrary\Tests\Fixtures\TestFormats;
+namespace Wotz\MediaLibrary\Tests\Fixtures\TestFormats;
 
-use Codedor\MediaLibrary\Formats\Format;
-use Codedor\MediaLibrary\Formats\Manipulations;
-use Codedor\MediaLibrary\Tests\Fixtures\TestModels\TestModel;
+use Wotz\MediaLibrary\Formats\Format;
+use Wotz\MediaLibrary\Formats\Manipulations;
+use Wotz\MediaLibrary\Tests\Fixtures\TestModels\TestModel;
 use Spatie\Image\Enums\Fit;
 
 class TestHero extends Format

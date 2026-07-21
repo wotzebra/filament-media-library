@@ -1,18 +1,16 @@
 <?php
 
-namespace Codedor\MediaLibrary\Formats;
+namespace Wotz\MediaLibrary\Formats;
 
-use Codedor\MediaLibrary\Models\Attachment;
 use Spatie\Image\Drivers\ImageDriver;
 use Spatie\Image\Enums\Fit;
+use Wotz\MediaLibrary\Models\Attachment;
 
 class Thumbnail extends Format
 {
     public bool $shownInFormatter = false;
 
     protected string $name = 'Thumbnail';
-
-    protected string $description = 'Used in the CMS to display low-res images';
 
     public function definition(): Manipulations|ImageDriver
     {
@@ -22,5 +20,10 @@ class Thumbnail extends Format
     public function registerModelsForFormatter(): void
     {
         $this->registerFor(Attachment::class);
+    }
+
+    public function description(): string
+    {
+        return __('filament-media-library::formats.thumbnail description');
     }
 }

@@ -7,7 +7,7 @@ We love pull requests from everyone. By participating in this project, you agree
 [Fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo), then clone the repo:
 
 ```bash
-git clone git@github.com:your-username/:package_slug.git
+git clone git@github.com:your-username/filament-media-library.git
 ```
 
 Install the composer packages:
@@ -44,8 +44,6 @@ Some things to consider before submitting an issue
 -   When making an issue, follow the issue templates and provide as much information as possible, even better try to provide a repository demonstrating the issue.
 
 ## Coding style
-
-See our [guidelines](https://guidelines.codedor.be/coding-standards/php).
 
 ### Laravel Pint
 

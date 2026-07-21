@@ -1,34 +1,40 @@
 <?php
 
-namespace Codedor\MediaLibrary\Resources;
+namespace Wotz\MediaLibrary\Resources;
 
-use Codedor\MediaLibrary\Models\AttachmentTag;
-use Codedor\MediaLibrary\Resources\AttachmentTagResource\Pages\ManageAttachmentTags;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Wotz\MediaLibrary\Models\AttachmentTag;
+use Wotz\MediaLibrary\Resources\AttachmentTagResource\Pages\ManageAttachmentTags;
 
 class AttachmentTagResource extends Resource
 {
     protected static ?string $model = AttachmentTag::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-tag';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-tag';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form->schema([
+        return $schema->components([
             TextInput::make('title')
+                ->label(__('filament-media-library::admin.title'))
                 ->required(),
 
             Select::make('parent')
+                ->label(__('filament-media-library::admin.parent'))
                 ->relationship('parent', 'title'),
 
             Toggle::make('is_hidden')
-                ->helperText('Hide images with this tag from the media library and picker')
+                ->label(__('filament-media-library::admin.is hidden'))
+                ->helperText(__('filament-media-library::admin.is hidden help text'))
                 ->default(false),
         ]);
     }
@@ -37,19 +43,22 @@ class AttachmentTagResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('title'),
-                Tables\Columns\TextColumn::make('parent.title'),
-                Tables\Columns\IconColumn::make('is_hidden')->boolean(),
+                Tables\Columns\TextColumn::make('title')
+                    ->label(__('filament-media-library::admin.title')),
+
+                Tables\Columns\TextColumn::make('parent.title')
+                    ->label(__('filament-media-library::admin.parent')),
+
+                Tables\Columns\IconColumn::make('is_hidden')
+                    ->label(__('filament-media-library::admin.is hidden'))
+                    ->boolean(),
             ])
-            ->filters([
-                //
+            ->recordActions([
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                DeleteBulkAction::make(),
             ]);
     }
 
@@ -58,5 +67,20 @@ class AttachmentTagResource extends Resource
         return [
             'index' => ManageAttachmentTags::route('/'),
         ];
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('filament-media-library::admin.attachment tags title');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('filament-media-library::admin.attachment tags title');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('filament-media-library::admin.attachment tags title singular');
     }
 }

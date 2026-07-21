@@ -1,17 +1,17 @@
 <?php
 
-namespace Codedor\MediaLibrary\Resources\AttachmentResource\Pages;
+namespace Wotz\MediaLibrary\Resources\AttachmentResource\Pages;
 
-use Codedor\MediaLibrary\Filament\Actions\Tables\TableUploadAttachmentAction;
-use Codedor\MediaLibrary\Models\AttachmentTag;
-use Codedor\MediaLibrary\Resources\AttachmentResource;
-use Codedor\MediaLibrary\Resources\AttachmentTagResource;
 use Filament\Actions;
-use Filament\Forms\Form;
 use Filament\Resources\Pages\ListRecords;
+use Filament\Schemas\Schema;
 use Filament\Tables\Table;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
+use Wotz\MediaLibrary\Filament\Actions\Tables\TableUploadAttachmentAction;
+use Wotz\MediaLibrary\Models\AttachmentTag;
+use Wotz\MediaLibrary\Resources\AttachmentResource;
+use Wotz\MediaLibrary\Resources\AttachmentTagResource;
 
 class ListAttachments extends ListRecords
 {
@@ -35,8 +35,8 @@ class ListAttachments extends ListRecords
                 ->authorize(AttachmentTagResource::canCreate())
                 ->model(AttachmentTag::class)
                 ->outlined()
-                ->form(
-                    AttachmentTagResource::form(Form::make($this))
+                ->schema(
+                    AttachmentTagResource::form(Schema::make($this))
                         ->columns(2)
                         ->getComponents()
                 ),

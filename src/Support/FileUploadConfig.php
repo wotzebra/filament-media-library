@@ -1,6 +1,6 @@
 <?php
 
-namespace Codedor\MediaLibrary\Support;
+namespace Wotz\MediaLibrary\Support;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 

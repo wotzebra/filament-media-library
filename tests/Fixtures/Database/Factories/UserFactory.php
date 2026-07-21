@@ -1,8 +1,8 @@
 <?php
 
-namespace Codedor\MediaLibrary\Tests\Fixtures\Database\Factories;
+namespace Wotz\MediaLibrary\Tests\Fixtures\Database\Factories;
 
-use Codedor\MediaLibrary\Tests\Fixtures\Models\User;
+use Wotz\MediaLibrary\Tests\Fixtures\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Codedor\MediaLibrary\Views;
+namespace Wotz\MediaLibrary\Views;
 
 class Placeholder extends Picture
 {

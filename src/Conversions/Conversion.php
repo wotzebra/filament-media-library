@@ -1,9 +1,9 @@
 <?php
 
-namespace Codedor\MediaLibrary\Conversions;
+namespace Wotz\MediaLibrary\Conversions;
 
-use Codedor\MediaLibrary\Formats\Format;
-use Codedor\MediaLibrary\Models\Attachment;
+use Wotz\MediaLibrary\Formats\Format;
+use Wotz\MediaLibrary\Models\Attachment;
 
 interface Conversion
 {

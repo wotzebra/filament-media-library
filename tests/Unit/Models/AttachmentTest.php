@@ -1,8 +1,8 @@
 <?php
 
-use Codedor\MediaLibrary\Facades\Formats;
-use Codedor\MediaLibrary\Models\Attachment;
-use Codedor\MediaLibrary\Tests\Fixtures\TestFormats\TestHero;
+use Wotz\MediaLibrary\Facades\Formats;
+use Wotz\MediaLibrary\Models\Attachment;
+use Wotz\MediaLibrary\Tests\Fixtures\TestFormats\TestHero;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;

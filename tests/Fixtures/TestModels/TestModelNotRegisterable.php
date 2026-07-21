@@ -1,6 +1,6 @@
 <?php
 
-namespace Codedor\MediaLibrary\Tests\Fixtures\TestModels;
+namespace Wotz\MediaLibrary\Tests\Fixtures\TestModels;
 
 use Illuminate\Database\Eloquent\Model;
 

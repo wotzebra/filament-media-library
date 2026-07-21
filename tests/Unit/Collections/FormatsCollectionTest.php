@@ -1,13 +1,13 @@
 <?php
 
-use Codedor\MediaLibrary\Facades\Formats;
-use Codedor\MediaLibrary\Formats\Format;
-use Codedor\MediaLibrary\Tests\Fixtures\TestFormats\TestHero;
-use Codedor\MediaLibrary\Tests\Fixtures\TestModels\TestModel;
+use Wotz\MediaLibrary\Facades\Formats;
+use Wotz\MediaLibrary\Formats\Format;
+use Wotz\MediaLibrary\Tests\Fixtures\TestFormats\TestHero;
+use Wotz\MediaLibrary\Tests\Fixtures\TestModels\TestModel;
 
 it('registers model', function () {
     expect(Formats::register([TestHero::class]))
-        ->toBeInstanceOf(\Codedor\MediaLibrary\Collections\Formats::class)
+        ->toBeInstanceOf(\Wotz\MediaLibrary\Collections\Formats::class)
         ->toHaveKey(TestModel::class)
         ->first()
         ->first()
