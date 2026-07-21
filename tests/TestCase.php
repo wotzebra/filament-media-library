@@ -15,6 +15,7 @@ use Filament\Schemas\SchemasServiceProvider;
 use Filament\Support\SupportServiceProvider;
 use Filament\Tables\TablesServiceProvider;
 use Filament\Widgets\WidgetsServiceProvider;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithViews;
 use Livewire\LivewireServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
@@ -30,6 +31,10 @@ class TestCase extends Orchestra
     protected function setUp(): void
     {
         parent::setUp();
+
+        Factory::guessFactoryNamesUsing(
+            fn (string $modelName) => 'Wotz\\MediaLibrary\\Tests\\Fixtures\\Database\\Factories\\' . class_basename($modelName) . 'Factory'
+        );
     }
 
     public function getEnvironmentSetUp($app)
@@ -78,5 +83,7 @@ class TestCase extends Orchestra
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations/2023_04_27_120359_create_attachment_formats.php');
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations/2025_01_30_130345_add_is_hidden_to_attachment_tags.php');
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations/2026_02_27_000001_add_versioning_to_attachments.php');
+
+        $this->loadMigrationsFrom(__DIR__ . '/Fixtures/Database/migrations/create_users_table.php');
     }
 }

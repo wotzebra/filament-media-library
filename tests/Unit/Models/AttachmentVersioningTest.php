@@ -28,7 +28,7 @@ function createStoredAttachment(array $data = []): Attachment
 
     $attachment->getStorage()->put(
         $attachment->file_path,
-        File::get(__DIR__ . '/../../TestFiles/test.jpg')
+        File::get(__DIR__ . '/../../Fixtures/images/test.jpg')
     );
 
     return $attachment;

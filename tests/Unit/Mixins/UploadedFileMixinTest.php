@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Storage;
 use Wotz\MediaLibrary\Facades\Formats;
 use Wotz\MediaLibrary\Jobs\GenerateAttachmentFormat;
 use Wotz\MediaLibrary\Models\Attachment;
-use Wotz\MediaLibrary\Tests\TestFormats\TestHero;
+use Wotz\MediaLibrary\Tests\Fixtures\TestFormats\TestHero;
 
 use function Pest\Laravel\assertDatabaseCount;
 use function Pest\Laravel\assertDatabaseHas;

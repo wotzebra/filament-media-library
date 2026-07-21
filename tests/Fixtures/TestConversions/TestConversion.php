@@ -1,6 +1,6 @@
 <?php
 
-namespace Wotz\MediaLibrary\Tests\TestConversions;
+namespace Wotz\MediaLibrary\Tests\Fixtures\TestConversions;
 
 use Wotz\MediaLibrary\Conversions\Conversion;
 use Wotz\MediaLibrary\Formats\Format;

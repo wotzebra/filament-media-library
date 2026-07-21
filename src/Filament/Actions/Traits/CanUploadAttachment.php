@@ -17,6 +17,7 @@ use Livewire\Component;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Wotz\MediaLibrary\Models\Attachment;
 use Wotz\MediaLibrary\Models\AttachmentTag;
+use Wotz\MediaLibrary\Rules\FileRule;
 use Wotz\TranslatableTabs\Forms\TranslatableTabs;
 
 trait CanUploadAttachment
@@ -62,7 +63,23 @@ trait CanUploadAttachment
                     ->hiddenLabel()
                     ->required()
                     ->multiple(fn () => $this->isMultiple())
-                    ->saveUploadedFileUsing(function (TemporaryUploadedFile $file, Set $set): string {
+                    // dimensions validation
+                    ->rule(new FileRule)
+                    // image file size validation
+                    // ->rule(File::types(collect(config('filament-media-library.extensions', []))->flatten()->toArray())
+                    //     ->max('10mb'))
+                        // max:config('media.validation.max_file_size', 5) * 1000000
+                    // file size validation
+                    // mime type validation
+                    // color type validation
+                    // $this->validateImageFileSize();
+                    // $this->validateFileSize();
+                    // $this->validateMimeType();
+                    // $this->validateColorType();
+                    ->saveUploadedFileUsing(function (TemporaryUploadedFile $file, Set $set, Component $livewire): string {
+                        // this does not work
+                        // $livewire->addError($this->getName(), 'Dimensions must be 100x100, is now 200x101');
+
                         $attachment = $file->save();
 
                         return $attachment->id;

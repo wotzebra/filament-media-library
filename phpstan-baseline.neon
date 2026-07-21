@@ -25,6 +25,10 @@ parameters:
             count: 1
             path: src/Resources/AttachmentResource/Pages/ListAttachments.php
         -
+            message: "#^Call to an undefined method Symfony\\\\Component\\\\HttpFoundation\\\\File\\\\UploadedFile\\:\\:isImage\\(\\).$#"
+            count: 3
+            path: src/Rules/FileRule.php
+        -
             message: "#^Access to an undefined property Livewire\\\\Component\\:\\:\\$mountedActions.$#"
             paths:
                 - src/Filament/Actions/Traits/CanUploadAttachment.php

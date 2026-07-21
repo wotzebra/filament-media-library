@@ -2,8 +2,8 @@
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Wotz\MediaLibrary\Facades\Formats;
-use Wotz\MediaLibrary\Tests\TestFormats\TestHero;
-use Wotz\MediaLibrary\Tests\TestFormats\TestNoHeight;
+use Wotz\MediaLibrary\Tests\Fixtures\TestFormats\TestHero;
+use Wotz\MediaLibrary\Tests\Fixtures\TestFormats\TestNoHeight;
 use Wotz\MediaLibrary\Views\Picture;
 
 uses(RefreshDatabase::class);

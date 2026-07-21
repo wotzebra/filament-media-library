@@ -1,11 +1,11 @@
 <?php
 
-namespace Wotz\MediaLibrary\Tests\TestFormats;
+namespace Wotz\MediaLibrary\Tests\Fixtures\TestFormats;
 
 use Spatie\Image\Enums\Fit;
 use Wotz\MediaLibrary\Formats\Format;
 use Wotz\MediaLibrary\Formats\Manipulations;
-use Wotz\MediaLibrary\Tests\TestModels\TestModel;
+use Wotz\MediaLibrary\Tests\Fixtures\TestModels\TestModel;
 
 class TestNoHeight extends Format
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Wotz\MediaLibrary\Tests\TestModels;
+namespace Wotz\MediaLibrary\Tests\Fixtures\TestModels;
 
 use Illuminate\Database\Eloquent\Model;
 use Wotz\MediaLibrary\Interfaces\HasFormats;

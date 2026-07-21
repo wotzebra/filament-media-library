@@ -5,9 +5,29 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Wotz\MediaLibrary\Facades\Formats;
 use Wotz\MediaLibrary\Models\Attachment;
-use Wotz\MediaLibrary\Tests\TestFormats\TestHero;
+use Wotz\MediaLibrary\Tests\Fixtures\TestFormats\TestHero;
 
 uses(RefreshDatabase::class);
+
+it('returns the directory', function () {
+    /** @var Attachment $attachment */
+    $attachment = createAttachment([
+        'id' => 1,
+    ]);
+
+    expect($attachment->directory)
+        ->toBe('attachments/1');
+});
+
+it('returns the filename', function () {
+    /** @var Attachment $attachment */
+    $attachment = createAttachment([
+        'name' => 'test-file',
+    ]);
+
+    expect($attachment->filename)
+        ->toBe("test-file.$attachment->extension");
+});
 
 it('deletes root directory when attachment is removed from db', function () {
     Storage::fake('public');
@@ -21,7 +41,7 @@ it('deletes root directory when attachment is removed from db', function () {
 
     $attachment->getStorage()->put(
         $attachment->file_path,
-        File::get(__DIR__ . '/../../TestFiles/test.jpg')
+        File::get(__DIR__ . '/../../Fixtures/images/test.jpg')
     );
 
     $attachment->delete();

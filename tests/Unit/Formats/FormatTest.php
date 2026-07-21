@@ -3,8 +3,8 @@
 use Illuminate\Support\Facades\Config;
 use Wotz\MediaLibrary\Conversions\LocalConversion;
 use Wotz\MediaLibrary\Providers\MediaLibraryServiceProvider;
-use Wotz\MediaLibrary\Tests\TestConversions\TestConversion;
-use Wotz\MediaLibrary\Tests\TestFormats\TestHero;
+use Wotz\MediaLibrary\Tests\Fixtures\TestConversions\TestConversion;
+use Wotz\MediaLibrary\Tests\Fixtures\TestFormats\TestHero;
 
 it('returns default conversion', function () {
     $format = new TestHero('test');

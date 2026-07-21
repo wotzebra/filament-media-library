@@ -2,8 +2,8 @@
 
 use Wotz\MediaLibrary\Facades\Formats;
 use Wotz\MediaLibrary\Formats\Format;
-use Wotz\MediaLibrary\Tests\TestFormats\TestHero;
-use Wotz\MediaLibrary\Tests\TestModels\TestModel;
+use Wotz\MediaLibrary\Tests\Fixtures\TestFormats\TestHero;
+use Wotz\MediaLibrary\Tests\Fixtures\TestModels\TestModel;
 
 it('registers model', function () {
     expect(Formats::register([TestHero::class]))

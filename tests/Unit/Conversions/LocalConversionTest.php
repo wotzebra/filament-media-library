@@ -10,7 +10,7 @@ use Wotz\MediaLibrary\Conversions\LocalConversion;
 use Wotz\MediaLibrary\Facades\Formats;
 use Wotz\MediaLibrary\Formats\Format;
 use Wotz\MediaLibrary\Models\Attachment;
-use Wotz\MediaLibrary\Tests\TestFormats\TestHero;
+use Wotz\MediaLibrary\Tests\Fixtures\TestFormats\TestHero;
 
 uses(RefreshDatabase::class);
 
@@ -63,7 +63,7 @@ it('converts image to webp', function () {
 
     $attachment->getStorage()->put(
         $attachment->file_path,
-        File::get(__DIR__ . '/../../TestFiles/test.jpg')
+        File::get(__DIR__ . '/../../Fixtures/images/test.jpg')
     );
 
     /** @var Format $format */
