@@ -1,11 +1,10 @@
 <?php
 
 use Illuminate\Http\UploadedFile;
+use Livewire\Livewire;
 use Wotz\MediaLibrary\Resources\AttachmentResource\Pages\ListAttachments;
 use Wotz\MediaLibrary\Support\FileUploadConfig;
 use Wotz\MediaLibrary\Tests\Fixtures\Models\User;
-
-use function Pest\Livewire\livewire;
 
 beforeEach(function () {
     $this->actingAs(User::factory()->create());
@@ -18,7 +17,7 @@ beforeEach(function () {
 });
 
 it('cannot upload files with too big dimensions', function () {
-    livewire(ListAttachments::class)
+    Livewire::test(ListAttachments::class)
         ->mountAction('upload')
         ->assertSee('Upload')
         ->fillForm([
@@ -33,7 +32,7 @@ it('cannot upload files with too big dimensions', function () {
 });
 
 it('cannot upload files with too big width', function () {
-    livewire(ListAttachments::class)
+    Livewire::test(ListAttachments::class)
         ->mountAction('upload')
         ->assertSee('Upload')
         ->fillForm([
@@ -48,7 +47,7 @@ it('cannot upload files with too big width', function () {
 });
 
 it('cannot upload files with too big height', function () {
-    livewire(ListAttachments::class)
+    Livewire::test(ListAttachments::class)
         ->mountAction('upload')
         ->assertSee('Upload')
         ->fillForm([
@@ -63,7 +62,7 @@ it('cannot upload files with too big height', function () {
 });
 
 it('cannot upload file with correct dimensions', function () {
-    livewire(ListAttachments::class)
+    Livewire::test(ListAttachments::class)
         ->mountAction('upload')
         ->assertSee('Upload')
         ->fillForm([
@@ -78,7 +77,7 @@ it('cannot upload file with correct dimensions', function () {
 });
 
 it('cannot upload image that is too large', function () {
-    livewire(ListAttachments::class)
+    Livewire::test(ListAttachments::class)
         ->mountAction('upload')
         ->assertSee('Upload')
         ->fillForm([
@@ -93,7 +92,7 @@ it('cannot upload image that is too large', function () {
 });
 
 it('can upload image that is not larger than max file size', function () {
-    livewire(ListAttachments::class)
+    Livewire::test(ListAttachments::class)
         ->mountAction('upload')
         ->assertSee('Upload')
         ->fillForm([
@@ -112,7 +111,7 @@ it('cannot upload pdf that is too large', function () {
         ->shouldReceive('getMaxFilesize')
         ->andReturn(5 * 1024); // 5 KB
 
-    livewire(ListAttachments::class)
+    Livewire::test(ListAttachments::class)
         ->mountAction('upload')
         ->assertSee('Upload')
         ->fillForm([
@@ -131,7 +130,7 @@ it('can upload pdf that is not larger than max file size', function () {
         ->shouldReceive('getMaxFilesize')
         ->andReturn(5 * 1024); // 5 KB
 
-    livewire(ListAttachments::class)
+    Livewire::test(ListAttachments::class)
         ->mountAction('upload')
         ->assertSee('Upload')
         ->fillForm([
@@ -146,7 +145,7 @@ it('can upload pdf that is not larger than max file size', function () {
 });
 
 it('cannot upload image that has no valid extension', function () {
-    livewire(ListAttachments::class)
+    Livewire::test(ListAttachments::class)
         ->mountAction('upload')
         ->assertSee('Upload')
         ->fillForm([
@@ -161,7 +160,7 @@ it('cannot upload image that has no valid extension', function () {
 });
 
 it('can upload image that has valid extension', function () {
-    livewire(ListAttachments::class)
+    Livewire::test(ListAttachments::class)
         ->mountAction('upload')
         ->assertSee('Upload')
         ->fillForm([
@@ -176,7 +175,7 @@ it('can upload image that has valid extension', function () {
 });
 
 it('cannot upload image with wrong color type', function () {
-    livewire(ListAttachments::class)
+    Livewire::test(ListAttachments::class)
         ->mountAction('upload')
         ->assertSee('Upload')
         ->fillForm([
@@ -191,7 +190,7 @@ it('cannot upload image with wrong color type', function () {
 });
 
 it('can upload image that is rgb', function () {
-    livewire(ListAttachments::class)
+    Livewire::test(ListAttachments::class)
         ->mountAction('upload')
         ->assertSee('Upload')
         ->fillForm([
