@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * @property string $attachment_id
  * @property string $format
+ * @property array<mixed>|null $data
  * @property Carbon $updated_at
  */
 class AttachmentFormat extends Model

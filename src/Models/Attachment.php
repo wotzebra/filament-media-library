@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Storage;
 use Spatie\Translatable\HasTranslations;
 use Wotz\MediaLibrary\Database\Factories\AttachmentFactory;
 use Wotz\MediaLibrary\Models\Traits\HasFormats;
+use Wotz\MediaLibrary\Models\Traits\HasVersions;
 
 /**
  * @property string $name
@@ -28,6 +29,7 @@ use Wotz\MediaLibrary\Models\Traits\HasFormats;
  * @property string $translated_name
  * @property int|null $width
  * @property int|null $height
+ * @property int $version
  */
 class Attachment extends Model
 {
@@ -35,6 +37,7 @@ class Attachment extends Model
     use HasFormats;
     use HasTranslations;
     use HasUuids;
+    use HasVersions;
 
     protected $keyType = 'string';
 
@@ -96,7 +99,16 @@ class Attachment extends Model
             );
         }
 
-        return $disk->url("{$this->directory}/{$this->filename}");
+        $url = $disk->url("{$this->directory}/{$this->filename}");
+
+        // A replaced file keeps its path, so the version counter busts stale caches.
+        // Temporary urls returned above are left alone: they rotate by themselves and
+        // an unsigned query parameter would invalidate their signature.
+        if ($this->version > 1) {
+            $url .= (parse_url($url, PHP_URL_QUERY) ? '&' : '?') . "v={$this->version}";
+        }
+
+        return $url;
     }
 
     public function getFilenameAttribute(): string
