@@ -128,6 +128,25 @@ This configuration can be adjusted as desired.
 The format generation action is a button that will generate all the formats for the given attachment.
 This can be used on the Media Library as a bulk action. This action can be disabled by setting the `enable-format-generate-action` to false.
 
+### Formatter smoothing
+
+When cropping an image in the formatter, the resulting canvas can optionally use image smoothing. This is controlled
+through the `formatter-smoothing` key:
+
+```php
+'formatter-smoothing' => [
+    'enabled' => false,
+    'quality' => 'high',
+],
+```
+
+- `enabled`: whether image smoothing is applied when the cropped canvas is generated. This is `false` by default.
+- `quality`: the smoothing quality passed to the canvas. Accepts `'low'`, `'medium'` or `'high'`.
+
+These values map directly to the [`imageSmoothingEnabled`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/imageSmoothingEnabled)
+and [`imageSmoothingQuality`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/imageSmoothingQuality)
+canvas options used while cropping.
+
 ### S3 support
 
 To use S3 as a storage, you can use the `Codedor\MediaLibrary\Conversions\S3Conversion` class.
