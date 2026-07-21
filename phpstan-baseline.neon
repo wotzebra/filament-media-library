@@ -29,3 +29,11 @@ parameters:
             paths:
                 - src/Filament/Actions/Traits/CanUploadAttachment.php
                 - src/Filament/Actions/Forms/UploadAttachmentAction.php
+        -
+            message: "#^Call to an undefined method Livewire\\\\Features\\\\SupportFileUploads\\\\TemporaryUploadedFile\\:\\:getMd5\\(\\).$#"
+            count: 1
+            path: src/Models/Traits/HasVersions.php
+        -
+            message: "#^Call to an undefined method Livewire\\\\Features\\\\SupportFileUploads\\\\TemporaryUploadedFile\\:\\:fileType\\(\\).$#"
+            count: 1
+            path: src/Models/Traits/HasVersions.php

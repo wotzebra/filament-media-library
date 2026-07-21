@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Mockery\MockInterface;
 use Wotz\MediaLibrary\Conversions\Conversion;
+use Wotz\MediaLibrary\Conversions\LocalConversion;
 use Wotz\MediaLibrary\Jobs\GenerateAttachmentFormat;
 use Wotz\MediaLibrary\Models\Attachment;
 use Wotz\MediaLibrary\Tests\TestFormats\TestHero;
@@ -71,7 +72,7 @@ it('applies manual crops when regenerating formats', function () {
     expect($attachment->formats()->where('format', $format->key())->first()->data)->not()->toBeEmpty();
 
     // Use the real LocalConversion class to test our fix
-    $conversion = new \Wotz\MediaLibrary\Conversions\LocalConversion;
+    $conversion = new LocalConversion;
 
     // The conversion should return true and process WITH the manual crop applied
     $result = $conversion->convert($attachment, $format, force: true);

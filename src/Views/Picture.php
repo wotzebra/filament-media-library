@@ -23,6 +23,7 @@ class Picture extends Component
         public ?string $title = '',
         public bool $lazyload = true,
         public ?string $lazyloadInitialFormat = 'lazyload',
+        public ?string $fetchpriority = null,
     ) {
         if ($this->format) {
             $this->getFormatClass();

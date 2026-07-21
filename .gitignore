@@ -11,3 +11,5 @@ vendor
 node_modules
 coveraged
 build
+
+.claude

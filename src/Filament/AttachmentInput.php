@@ -3,6 +3,7 @@
 namespace Wotz\MediaLibrary\Filament;
 
 use Closure;
+use Filament\Actions\Action;
 use Filament\Forms\Components\Field;
 use Filament\Forms\Set;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -67,7 +68,7 @@ class AttachmentInput extends Field
         });
 
         $this->registerActions([
-            \Filament\Actions\Action::make('remove-attachment')
+            Action::make('remove-attachment')
                 ->closeModalByClickingAway(false)
                 ->icon('heroicon-o-x-circle')
                 ->iconButton()
@@ -85,7 +86,7 @@ class AttachmentInput extends Field
                     }
                 }),
 
-            \Filament\Actions\Action::make('format-attachment')
+            Action::make('format-attachment')
                 ->closeModalByClickingAway(false)
                 ->icon('heroicon-o-scissors')
                 ->iconButton()
@@ -105,7 +106,7 @@ class AttachmentInput extends Field
                     );
                 }),
 
-            \Filament\Actions\Action::make('edit-attachment')
+            Action::make('edit-attachment')
                 ->closeModalByClickingAway(false)
                 ->icon('heroicon-s-pencil')
                 ->iconButton()
@@ -119,7 +120,7 @@ class AttachmentInput extends Field
                 ->closeModalByClickingAway(false)
                 ->multiple(fn () => $this->isMultiple()),
 
-            \Filament\Actions\Action::make('attachment-picker')
+            Action::make('attachment-picker')
                 ->closeModalByClickingAway(false)
                 ->label(__('filament-media-library::picker.select existing media'))
                 ->modalHeading(__('filament-media-library::picker.select existing media'))

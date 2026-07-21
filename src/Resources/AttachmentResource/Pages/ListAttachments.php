@@ -4,6 +4,7 @@ namespace Wotz\MediaLibrary\Resources\AttachmentResource\Pages;
 
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
+use Filament\Schemas\Schema;
 use Filament\Tables\Table;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
@@ -35,7 +36,7 @@ class ListAttachments extends ListRecords
                 ->model(AttachmentTag::class)
                 ->outlined()
                 ->schema(
-                    AttachmentTagResource::form(\Filament\Schemas\Schema::make($this))
+                    AttachmentTagResource::form(Schema::make($this))
                         ->columns(2)
                         ->getComponents()
                 ),
