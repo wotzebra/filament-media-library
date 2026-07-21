@@ -52,7 +52,10 @@
                         format: this.currentFormat,
                         data: window.cropper.getData(),
                         crop: window.cropper
-                            .getCroppedCanvas()
+                            .getCroppedCanvas({
+                                imageSmoothingEnabled: {{ config('filament-media-library.formatter-smoothing.enabled', false) ? 'true' : 'false' }},
+                                imageSmoothingQuality: '{{ config('filament-media-library.formatter-smoothing.quality', 'high') }}',
+                            })
                             .toDataURL('image/png'),
                     })
                 },

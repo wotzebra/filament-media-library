@@ -67,6 +67,10 @@ return [
         'extension' => 'webp',
         'mime-type' => 'image/webp',
     ],
+    'formatter-smoothing' => [
+        'enabled' => false,
+        'quality' => 'high',
+    ],
     'format-queue' => 'default',
     'extensions' => [
         'image' => [
@@ -123,6 +127,25 @@ This configuration can be adjusted as desired.
 
 The format generation action is a button that will generate all the formats for the given attachment.
 This can be used on the Media Library as a bulk action. This action can be disabled by setting the `enable-format-generate-action` to false.
+
+### Formatter smoothing
+
+When cropping an image in the formatter, the resulting canvas can optionally use image smoothing. This is controlled
+through the `formatter-smoothing` key:
+
+```php
+'formatter-smoothing' => [
+    'enabled' => false,
+    'quality' => 'high',
+],
+```
+
+- `enabled`: whether image smoothing is applied when the cropped canvas is generated. This is `false` by default.
+- `quality`: the smoothing quality passed to the canvas. Accepts `'low'`, `'medium'` or `'high'`.
+
+These values map directly to the [`imageSmoothingEnabled`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/imageSmoothingEnabled)
+and [`imageSmoothingQuality`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/imageSmoothingQuality)
+canvas options used while cropping.
 
 ### S3 support
 
@@ -459,7 +482,7 @@ php artisan media:generate-format {--attachment-id=} {--format=} {--force}
 
 If you do not pass an `attachment-id`, the formats will be generated for all attachments.
 If you do not pass a `format`, all formats will be generated for the attachments.
-With `force` you can force the generation of the formats, even if they already exist. 
+With `force` you can force the generation of the formats, even if they already exist.
 
 > [!WARNING]
 > Using force will also overwrite cropped images!
