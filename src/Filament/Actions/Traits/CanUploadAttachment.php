@@ -11,18 +11,23 @@ use Filament\Notifications\Notification;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
+use Filament\Schemas\Components\View;
 use Filament\Schemas\Components\Wizard\Step;
 use Illuminate\Support\Arr;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use Wotz\MediaLibrary\Formats\Format;
 use Wotz\MediaLibrary\Models\Attachment;
 use Wotz\MediaLibrary\Models\AttachmentTag;
 use Wotz\MediaLibrary\Rules\FileRule;
+use Wotz\MediaLibrary\Support\FormatSummary;
 use Wotz\TranslatableTabs\Forms\TranslatableTabs;
 
 trait CanUploadAttachment
 {
     protected bool|Closure $multiple = false;
+
+    protected null|array|Closure $allowedFormats = null;
 
     protected function setUp(): void
     {
@@ -41,6 +46,27 @@ trait CanUploadAttachment
     public function isMultiple(): bool
     {
         return $this->evaluate($this->multiple);
+    }
+
+    /**
+     * The formats of the field this action belongs to. Left null when the action is not
+     * tied to a field, and then the format block is not shown at all.
+     *
+     * @param  array<int, string|Format>|Closure|null  $allowedFormats
+     */
+    public function allowedFormats(null|array|Closure $allowedFormats): static
+    {
+        $this->allowedFormats = $allowedFormats;
+
+        return $this;
+    }
+
+    /**
+     * @return array<int, string|Format>|null
+     */
+    public function getAllowedFormats(): ?array
+    {
+        return $this->evaluate($this->allowedFormats);
     }
 
     protected function getUploadStep(): Step
@@ -84,7 +110,75 @@ trait CanUploadAttachment
 
                         return $attachment->id;
                     }),
+
+                // The formats of the field and how the upload resolves against them: covered,
+                // upscaled, or rejected by FileRule. It never blocks the step by itself.
+                View::make('filament-media-library::filament.upload-formats')
+                    ->visible(fn (): bool => FormatSummary::make($this->getAllowedFormats())->isNotEmpty())
+                    ->viewData(fn (Get $get): array => $this->getUploadFormatsViewData($get)),
             ]);
+    }
+
+    /**
+     * @return array{summary: FormatSummary|null, results: array<int, array<string, mixed>>, sourceWidth: int|null, fileErrors: array<int, string>}
+     */
+    protected function getUploadFormatsViewData(Get $get): array
+    {
+        $data = ['summary' => null, 'results' => [], 'sourceWidth' => null, 'fileErrors' => []];
+
+        $summary = FormatSummary::make($this->getAllowedFormats());
+
+        if ($summary->isEmpty()) {
+            return $data;
+        }
+
+        $files = collect(Arr::wrap($get('attachments')))
+            ->filter(fn ($file): bool => $file instanceof TemporaryUploadedFile);
+
+        // FileRule keeps owning the hard failures, but repeating them in the block means the
+        // editor reads them the moment a file lands rather than on the way to the next step.
+        $data['fileErrors'] = $files
+            ->flatMap(fn (TemporaryUploadedFile $file): array => $this->getFileRuleErrors($file))
+            ->all();
+
+        // Documents and SVGs have no raster dimensions to compare formats against, so their
+        // formats stay unresolved. They are still worth listing behind a failure.
+        $dimensions = $files
+            ->map(fn (TemporaryUploadedFile $file) => @getimagesize($file->getRealPath()))
+            ->filter(fn ($size): bool => is_array($size));
+
+        if ($files->isNotEmpty() && $dimensions->isEmpty()) {
+            if (blank($data['fileErrors'])) {
+                return $data;
+            }
+
+            return [...$data, 'summary' => $summary, 'results' => $summary->results(null, null)];
+        }
+
+        // One block per step, so with several files the smallest source decides per format.
+        $width = $dimensions->min(fn (array $size): int => (int) $size[0]);
+        $height = $dimensions->min(fn (array $size): int => (int) $size[1]);
+
+        return [
+            ...$data,
+            'summary' => $summary,
+            'results' => $summary->results($width, $height),
+            'sourceWidth' => $width,
+        ];
+    }
+
+    /**
+     * @return array<int, string>
+     */
+    protected function getFileRuleErrors(TemporaryUploadedFile $file): array
+    {
+        $errors = [];
+
+        (new FileRule)->validate('attachments', $file, function ($message) use (&$errors): void {
+            $errors[] = (string) $message;
+        });
+
+        return $errors;
     }
 
     protected function getAttachmentInformationStep(): Step

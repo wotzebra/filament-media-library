@@ -137,3 +137,8 @@
     word-break: break-word;
   }
 }
+
+/* The format hint sits next to the label instead of at the far end of the label row. */
+.fi-fo-field.attachment-input .fi-fo-field-label-ctn > .fi-sc {
+  @apply grow-0;
+}

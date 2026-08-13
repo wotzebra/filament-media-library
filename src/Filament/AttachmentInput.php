@@ -6,6 +6,7 @@ use Closure;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Field;
 use Filament\Forms\Set;
+use Filament\Support\Enums\Width;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -16,6 +17,7 @@ use Wotz\MediaLibrary\Formats\Format;
 use Wotz\MediaLibrary\Models\Attachment;
 use Wotz\MediaLibrary\Models\AttachmentTag;
 use Wotz\MediaLibrary\Resources\AttachmentResource;
+use Wotz\MediaLibrary\Support\FormatSummary;
 
 class AttachmentInput extends Field
 {
@@ -30,6 +32,38 @@ class AttachmentInput extends Field
     protected function setUp(): void
     {
         parent::setUp();
+
+        // Filament aligns the hint to the end of the label row, which drops it far away
+        // from the label on a full width field. The class pulls it back next to the label.
+        $this->extraFieldWrapperAttributes(['class' => 'attachment-input'], merge: true);
+
+        // A default, so a developer-set hint() still wins. It has to be a closure:
+        // getAllowedFormats() needs the model instance, which does not exist yet.
+        $this->hint(static fn (self $component): ?string => $component->getFormatSummary()->hint());
+
+        // The full list is a table in a modal rather than a tooltip: the descriptions are
+        // usage text, too long to stay readable in a hover popover.
+        $this->hintAction(
+            Action::make('formats')
+                ->label(__('filament-media-library::upload.formats title'))
+                ->tooltip(__('filament-media-library::upload.formats title'))
+                ->icon('heroicon-m-information-circle')
+                ->iconButton()
+                ->color('gray')
+                ->size('sm')
+                ->hidden(fn (): bool => $this->getFormatSummary()->isEmpty())
+                ->modalHeading(__('filament-media-library::upload.formats title'))
+                ->modalDescription(fn (): string => __('filament-media-library::upload.formats empty note', [
+                    'dimensions' => $this->getFormatSummary()->requiredDimensions(),
+                ]))
+                ->modalContent(fn () => view('filament-media-library::filament.format-list', [
+                    'summary' => $this->getFormatSummary(),
+                ]))
+                // The usage column carries full sentences, so the table needs the room.
+                ->modalWidth(Width::FourExtraLarge)
+                ->modalSubmitAction(false)
+                ->modalCancelActionLabel(__('filament-media-library::upload.formats close')),
+        );
 
         $this->saveRelationshipsUsing(static function (self $component, $state) {
             if (! $component->isMultiple()) {
@@ -118,7 +152,8 @@ class AttachmentInput extends Field
 
             UploadAttachmentAction::make('attachment-upload')
                 ->closeModalByClickingAway(false)
-                ->multiple(fn () => $this->isMultiple()),
+                ->multiple(fn () => $this->isMultiple())
+                ->allowedFormats(fn () => $this->getAllowedFormats()),
 
             Action::make('attachment-picker')
                 ->closeModalByClickingAway(false)
@@ -223,6 +258,11 @@ class AttachmentInput extends Field
         return Collection::wrap($formats)
             ->map(fn (string|Format $format) => is_string($format) ? $format : $format::class)
             ->toArray();
+    }
+
+    public function getFormatSummary(): FormatSummary
+    {
+        return FormatSummary::make($this->getAllowedFormats());
     }
 
     public function getRelationship(): BelongsToMany
