@@ -6,6 +6,7 @@ use Filament\Widgets\Widget;
 use Illuminate\Support\Collection;
 use Wotz\MediaLibrary\Facades\Formats;
 use Wotz\MediaLibrary\Formats\Format;
+use Wotz\MediaLibrary\Support\FormatSummary;
 
 class ImageFormats extends Widget
 {
@@ -20,30 +21,10 @@ class ImageFormats extends Widget
         return Formats::mapToKebab()
             ->map(fn (Format $format) => [
                 'name' => $format->name(),
-                'description' => $format->description(),
-                'definition' => $this->formatDefinition($format),
+                'description' => FormatSummary::describe($format),
+                'definition' => FormatSummary::formatDimensions($format) ?? __('filament-media-library::widgets.image-formats.auto'),
             ])
             ->sortBy('name')
             ->values();
-    }
-
-    protected function formatDefinition(Format $format): string
-    {
-        $width = $format->width();
-        $height = $format->height();
-
-        if ($width && $height) {
-            return "{$width} × {$height} px";
-        }
-
-        if ($width) {
-            return "{$width}px wide";
-        }
-
-        if ($height) {
-            return "{$height}px tall";
-        }
-
-        return 'Auto';
     }
 }
