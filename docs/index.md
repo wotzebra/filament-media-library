@@ -29,6 +29,7 @@
       * [allowedFormats](#allowedformats)
     * [AttachmentColumn](#attachmentcolumn)
     * [AttachmentEntry](#attachmententry)
+    * [ImageFormats widget](#imageformats-widget)
 - [UploadedFile Mixin]('#uploaded-file-mixin)
     * [Save Attachment]('#save-attachment)
     * [Create from URL]('#create-from-url)
@@ -411,6 +412,35 @@ This entry for an info list will render the image with the thumbnail format or a
 
 ```php
 \Wotz\MediaLibrary\Filament\Entries\AttachmentEntry::make('image'),
+```
+
+### ImageFormats widget
+
+This dashboard widget lists all registered formats (see [Registering formats](#registering-formats)) with their name, description and dimensions, so editors can see at a glance which sizes an uploaded image will be converted to. It spans the full width and only shows the formats registered via the `Formats` facade.
+
+![Image formats widget](image-formats-widget.png)
+
+Register it in your panel provider like any other widget:
+
+```php
+use Wotz\MediaLibrary\Filament\Widgets\ImageFormats;
+
+$panel->widgets([
+    ImageFormats::class,
+]);
+```
+
+Or add it to a specific page or resource:
+
+```php
+use Wotz\MediaLibrary\Filament\Widgets\ImageFormats;
+
+protected function getHeaderWidgets(): array
+{
+    return [
+        ImageFormats::class,
+    ];
+}
 ```
 
 
