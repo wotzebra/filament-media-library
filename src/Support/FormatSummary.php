@@ -113,7 +113,7 @@ class FormatSummary
 
                 return [
                     'name' => $format->name(),
-                    'description' => $this->describe($format),
+                    'description' => static::describe($format),
                     'width' => $width,
                     'height' => $height,
                     'dimensions' => static::dimensions($width, $height),
@@ -142,6 +142,14 @@ class FormatSummary
      * The wording follows the dashboard widget: `1200 × 630 px`, or `1920px wide` for
      * formats that only constrain one side.
      */
+    /**
+     * The dimensions a single format crops to, e.g. `1920px wide`. Null when the format has none.
+     */
+    public static function formatDimensions(Format $format): ?string
+    {
+        return static::dimensions(static::toInt($format->width()), static::toInt($format->height()));
+    }
+
     public static function dimensions(?int $width, ?int $height): ?string
     {
         if ($width !== null && $height !== null) {
@@ -171,7 +179,7 @@ class FormatSummary
         return $values->isEmpty() ? null : $values->max();
     }
 
-    protected function describe(Format $format): ?string
+    public static function describe(Format $format): ?string
     {
         try {
             return $format->description() ?: null;
@@ -181,7 +189,7 @@ class FormatSummary
         }
     }
 
-    protected function toInt(null|int|string $value): ?int
+    protected static function toInt(null|int|string $value): ?int
     {
         return filled($value) ? (int) $value : null;
     }

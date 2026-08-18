@@ -41,3 +41,7 @@ parameters:
             message: "#^Call to an undefined method Livewire\\\\Features\\\\SupportFileUploads\\\\TemporaryUploadedFile\\:\\:fileType\\(\\).$#"
             count: 1
             path: src/Models/Traits/HasVersions.php
+        -
+            message: "#^Property Wotz\\\\MediaLibrary\\\\Filament\\\\Widgets\\\\ImageFormats\\:\\:\\$view \\(view\\-string\\) does not accept default value of type string\\.$#"
+            count: 1
+            path: src/Filament/Widgets/ImageFormats.php
