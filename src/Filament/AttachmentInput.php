@@ -27,7 +27,7 @@ class AttachmentInput extends Field
 
     protected null|string|Closure $sortField = null;
 
-    protected ?array $allowedFormats = null;
+    protected null|array|Closure $allowedFormats = null;
 
     protected function setUp(): void
     {
@@ -234,7 +234,10 @@ class AttachmentInput extends Field
         return $this->evaluate($this->sortField);
     }
 
-    public function allowedFormats(?array $allowedFormats): static
+    /**
+     * @param  array<int, string|Format>|Closure|null  $allowedFormats
+     */
+    public function allowedFormats(null|array|Closure $allowedFormats): static
     {
         $this->allowedFormats = $allowedFormats;
 

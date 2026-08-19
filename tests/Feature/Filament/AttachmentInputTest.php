@@ -4,6 +4,7 @@ use Filament\Actions\Testing\TestAction;
 use Livewire\Livewire;
 use Wotz\MediaLibrary\Filament\AttachmentInput;
 use Wotz\MediaLibrary\Tests\Fixtures\Livewire\AttachmentInputComponent;
+use Wotz\MediaLibrary\Tests\Fixtures\Livewire\ConditionalFormatsAttachmentInputComponent;
 use Wotz\MediaLibrary\Tests\Fixtures\TestFormats\TestBanner;
 use Wotz\MediaLibrary\Tests\Fixtures\TestFormats\TestHero;
 
@@ -12,6 +13,22 @@ it('hints at the minimum source size and the format count', function () {
         ->allowedFormats([TestHero::class, TestBanner::class]);
 
     expect($field->getHint())->toBe('at least 200 × 100 px · 2 formats');
+});
+
+it('accepts a closure for the allowed formats', function () {
+    $field = AttachmentInput::make('image')
+        ->allowedFormats(fn (): array => [TestHero::class]);
+
+    expect($field->getAllowedFormats())->toBe([TestHero::class])
+        ->and($field->getHint())->toBe('100 × 100 px');
+});
+
+it('resolves closure formats against sibling fields', function () {
+    Livewire::test(ConditionalFormatsAttachmentInputComponent::class)
+        ->assertSee('200 × 50 px')
+        ->set('data.orientation', 'portrait')
+        ->assertSee('100 × 100 px')
+        ->assertDontSee('200 × 50 px');
 });
 
 it('hints nothing when no formats apply', function (AttachmentInput $field) {
