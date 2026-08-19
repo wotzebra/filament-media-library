@@ -398,6 +398,21 @@ AttachmentInput::make('profile_image_id')
     ])
 ```
 
+The method also accepts a closure, so the formats can depend on other fields in the same schema. This is useful in an Architect block where the rendered format is chosen by another field:
+
+```php
+use App\Formats\Landscape;
+use App\Formats\Portrait;
+use Filament\Schemas\Components\Utilities\Get;
+use Wotz\MediaLibrary\Components\Fields\AttachmentInput;
+
+AttachmentInput::make('image_id')
+    ->allowedFormats(fn (Get $get) => match ($get('orientation')) {
+        'portrait' => [Portrait::class],
+        default => [Landscape::class],
+    })
+```
+
 ### AttachmentColumn
 
 This column for a table will render the image with the thumbnail format or an icon if attachment is not an image.
