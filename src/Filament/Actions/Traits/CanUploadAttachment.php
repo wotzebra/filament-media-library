@@ -17,11 +17,11 @@ use Illuminate\Support\Arr;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Wotz\MediaLibrary\Formats\Format;
-use Wotz\MediaLibrary\Models\Attachment;
 use Wotz\MediaLibrary\Models\AttachmentTag;
 use Wotz\MediaLibrary\Rules\FileRule;
 use Wotz\MediaLibrary\Support\FormatSummary;
 use Wotz\TranslatableTabs\Forms\TranslatableTabs;
+use Wotz\MediaLibrary\Support\Config;
 
 trait CanUploadAttachment
 {
@@ -255,7 +255,7 @@ trait CanUploadAttachment
 
         collect($data['attachments'] ?? [])
             ->map(function (string $attachmentId) use ($data) {
-                $attachment = Attachment::find($attachmentId);
+                $attachment = Config::attachmentModel()::find($attachmentId);
 
                 if (! $attachment) {
                     return null;

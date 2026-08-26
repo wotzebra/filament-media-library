@@ -32,10 +32,16 @@ use Wotz\MediaLibrary\Jobs\GenerateAttachmentFormat;
 use Wotz\MediaLibrary\Models\Attachment;
 use Wotz\MediaLibrary\Resources\AttachmentResource\Pages;
 use Wotz\TranslatableTabs\Forms\TranslatableTabs;
+use Wotz\MediaLibrary\Support\Config;
 
 class AttachmentResource extends Resource
 {
-    protected static ?string $model = Attachment::class;
+    // Resolved rather than declared: a static property cannot call config(),
+    // and the resource must use the same model as the rest of the package.
+    public static function getModel(): string
+    {
+        return Config::attachmentModel();
+    }
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-paper-clip';
 
@@ -150,7 +156,7 @@ class AttachmentResource extends Resource
             ->filters([
                 Filters\SelectFilter::make('disk')
                     ->label(__('filament-media-library::admin.disk'))
-                    ->options(fn () => Attachment::select('disk')
+                    ->options(fn () => Config::attachmentQuery()->select('disk')
                         ->groupBy('disk')
                         ->orderBy('disk')
                         ->pluck('disk')
@@ -160,7 +166,7 @@ class AttachmentResource extends Resource
 
                 Filters\SelectFilter::make('type')
                     ->label(__('filament-media-library::admin.type'))
-                    ->options(fn () => Attachment::select('type')
+                    ->options(fn () => Config::attachmentQuery()->select('type')
                         ->groupBy('type')
                         ->orderBy('type')
                         ->pluck('type')
@@ -176,7 +182,7 @@ class AttachmentResource extends Resource
 
                 Filters\SelectFilter::make('mime_type')
                     ->label(__('filament-media-library::admin.mime type'))
-                    ->options(fn () => Attachment::select('mime_type')
+                    ->options(fn () => Config::attachmentQuery()->select('mime_type')
                         ->groupBy('mime_type')
                         ->orderBy('mime_type')
                         ->pluck('mime_type')

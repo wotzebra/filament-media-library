@@ -14,10 +14,10 @@ use Livewire\Component;
 use Wotz\MediaLibrary\Facades\Formats;
 use Wotz\MediaLibrary\Filament\Actions\Forms\UploadAttachmentAction;
 use Wotz\MediaLibrary\Formats\Format;
-use Wotz\MediaLibrary\Models\Attachment;
 use Wotz\MediaLibrary\Models\AttachmentTag;
 use Wotz\MediaLibrary\Resources\AttachmentResource;
 use Wotz\MediaLibrary\Support\FormatSummary;
+use Wotz\MediaLibrary\Support\Config;
 
 class AttachmentInput extends Field
 {
@@ -212,7 +212,7 @@ class AttachmentInput extends Field
             ->map(fn ($id) => "'{$id}'")
             ->join(',');
 
-        return Attachment::whereIn('id', Arr::wrap($state))
+        return Config::attachmentQuery()->whereIn('id', Arr::wrap($state))
             ->orderByRaw("FIELD(id,{$ids})")
             ->get();
     }
