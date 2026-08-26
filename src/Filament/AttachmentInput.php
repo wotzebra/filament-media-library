@@ -16,8 +16,8 @@ use Wotz\MediaLibrary\Filament\Actions\Forms\UploadAttachmentAction;
 use Wotz\MediaLibrary\Formats\Format;
 use Wotz\MediaLibrary\Models\AttachmentTag;
 use Wotz\MediaLibrary\Resources\AttachmentResource;
-use Wotz\MediaLibrary\Support\FormatSummary;
 use Wotz\MediaLibrary\Support\Config;
+use Wotz\MediaLibrary\Support\FormatSummary;
 
 class AttachmentInput extends Field
 {

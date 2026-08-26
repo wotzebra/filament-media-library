@@ -31,8 +31,8 @@ use Wotz\MediaLibrary\Formats\Format;
 use Wotz\MediaLibrary\Jobs\GenerateAttachmentFormat;
 use Wotz\MediaLibrary\Models\Attachment;
 use Wotz\MediaLibrary\Resources\AttachmentResource\Pages;
-use Wotz\TranslatableTabs\Forms\TranslatableTabs;
 use Wotz\MediaLibrary\Support\Config;
+use Wotz\TranslatableTabs\Forms\TranslatableTabs;
 
 class AttachmentResource extends Resource
 {

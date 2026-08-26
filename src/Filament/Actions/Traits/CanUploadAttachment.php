@@ -19,9 +19,9 @@ use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Wotz\MediaLibrary\Formats\Format;
 use Wotz\MediaLibrary\Models\AttachmentTag;
 use Wotz\MediaLibrary\Rules\FileRule;
+use Wotz\MediaLibrary\Support\Config;
 use Wotz\MediaLibrary\Support\FormatSummary;
 use Wotz\TranslatableTabs\Forms\TranslatableTabs;
-use Wotz\MediaLibrary\Support\Config;
 
 trait CanUploadAttachment
 {
