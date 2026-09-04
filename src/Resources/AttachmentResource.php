@@ -17,6 +17,7 @@ use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
+use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters;
@@ -42,6 +43,15 @@ class AttachmentResource extends Resource
     public static function getNavigationLabel(): string
     {
         return __('filament-media-library::attachment.dashboard navigation title');
+    }
+
+    /**
+     * Without this the sidebar, page title and breadcrumb disagree: the navigation says
+     * "Media library" while the breadcrumb falls back to the model label, "Attachments".
+     */
+    public static function getBreadcrumb(): string
+    {
+        return static::getNavigationLabel();
     }
 
     public static function form(Schema $schema): Schema
@@ -118,8 +128,11 @@ class AttachmentResource extends Resource
         return $table
             ->defaultSort('created_at', 'desc')
             ->contentGrid([
-                'md' => 2,
-                'xl' => 4,
+                'sm' => 2,
+                'md' => 3,
+                'lg' => 4,
+                'xl' => 5,
+                '2xl' => 6,
             ])
             ->columns([
                 Tables\Columns\Layout\Grid::make([
@@ -128,13 +141,27 @@ class AttachmentResource extends Resource
 
                 TextColumn::make('name')
                     ->label(__('filament-media-library::admin.name'))
+                    ->weight(FontWeight::Bold)
                     ->sortable()
                     ->searchable(query: function ($query, string $search) {
                         return $query->search($search);
                     })
-                    ->getStateUsing(fn (Attachment $record) => new HtmlString(
-                        '<strong>' . Str::limit($record->name, 20) . '</strong>',
-                    )),
+                    /**
+                     * `name` is the stored UUID, which tells an editor nothing. Prefer the
+                     * alt text or caption when one has been filled in, and fall back to a
+                     * short slice of the UUID rather than 20 meaningless characters.
+                     */
+                    ->getStateUsing(fn (Attachment $record): string => filled($record->alt)
+                        ? $record->alt
+                        : (filled($record->caption)
+                            ? $record->caption
+                            : Str::before($record->name, '-') . '…'))
+                    ->tooltip(fn (Attachment $record): string => $record->filename)
+                    ->description(fn (Attachment $record): string => implode(' · ', array_filter([
+                        Str::upper($record->extension),
+                        $record->isImage() && $record->width ? "{$record->width}×{$record->height}" : null,
+                        "{$record->formattedInMbSize} MB",
+                    ]))),
 
                 TextColumn::make('tags')
                     ->label(__('filament-media-library::admin.tags'))
