@@ -13,6 +13,7 @@ return [
     'height' => 'Hoogte',
     'tags' => 'Tags',
     'image' => 'Afbeelding',
+    'preview unavailable' => 'Voorbeeld niet beschikbaar',
     'disk' => 'Schijf',
     'format' => 'Formatteer',
     'generate formats' => 'Formaten genereren',
