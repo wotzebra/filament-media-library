@@ -9,9 +9,7 @@ use Wotz\MediaLibrary\Tests\Fixtures\TestModels\CustomRootAttachment;
 
 uses(RefreshDatabase::class);
 
-it('falls back to the packaged model', function () {
-    config()->set('filament-media-library.model', null);
-
+it('defaults to the packaged model', function () {
     expect(Config::attachmentModel())->toBe(Attachment::class)
         ->and(Config::attachmentModelInstance())->toBeInstanceOf(Attachment::class);
 });

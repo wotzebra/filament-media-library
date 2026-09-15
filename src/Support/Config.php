@@ -23,7 +23,7 @@ class Config
      */
     public static function attachmentModel(): string
     {
-        $model = config('filament-media-library.model') ?? Attachment::class;
+        $model = config('filament-media-library.model');
 
         if (! is_a($model, Attachment::class, true)) {
             throw InvalidConfiguration::modelIsNotValid($model);
