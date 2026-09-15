@@ -39,6 +39,10 @@ class Attachment extends Model
     use HasUuids;
     use HasVersions;
 
+    // Declared rather than guessed from the class name, so a configured
+    // subclass can be called anything without pointing at a missing table.
+    protected $table = 'attachments';
+
     protected $keyType = 'string';
 
     protected $fillable = [

@@ -1,8 +1,14 @@
 <?php
 
 use Wotz\MediaLibrary\Conversions\LocalConversion;
+use Wotz\MediaLibrary\Models\Attachment;
 
 return [
+    // Point this at a subclass of Wotz\MediaLibrary\Models\Attachment to
+    // change how attachments behave — overriding the root directory, for
+    // instance, so an application can keep an existing storage layout.
+    'model' => Attachment::class,
+
     'conversion' => LocalConversion::class,
     'enable-format-generate-action' => true,
     'force-format-extension' => [

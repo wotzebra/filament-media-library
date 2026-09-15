@@ -7,6 +7,7 @@ use Wotz\MediaLibrary\Facades\Formats;
 use Wotz\MediaLibrary\Formats\Format;
 use Wotz\MediaLibrary\Jobs\GenerateAttachmentFormat;
 use Wotz\MediaLibrary\Models\Attachment;
+use Wotz\MediaLibrary\Support\Config;
 
 class GenerateFormats extends Command
 {
@@ -34,7 +35,7 @@ class GenerateFormats extends Command
             fn ($formats) => $formats->only($this->option('format'))
         );
 
-        $attachments = Attachment::query()
+        $attachments = Config::attachmentQuery()
             ->when(
                 $this->option('attachment-id'),
                 fn ($query) => $query->where('id', $this->option('attachment-id'))

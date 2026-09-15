@@ -6,7 +6,7 @@ use Closure;
 use Filament\Tables\Columns\Column;
 use Filament\Tables\Columns\Concerns;
 use Illuminate\Support\Collection;
-use Wotz\MediaLibrary\Models\Attachment;
+use Wotz\MediaLibrary\Support\Config;
 
 class AttachmentColumn extends Column
 {
@@ -21,7 +21,7 @@ class AttachmentColumn extends Column
         $state = parent::getState();
 
         if (is_string($state)) {
-            $state = Attachment::find($state);
+            $state = Config::attachmentModel()::find($state);
         }
 
         $state = Collection::wrap($state)->pluck('id');
@@ -31,7 +31,7 @@ class AttachmentColumn extends Column
         }
 
         // Fetch the items again, otherwise we'll not have access to all our data
-        return Attachment::whereIn('id', $state)
+        return Config::attachmentQuery()->whereIn('id', $state)
             ->orderByRaw('FIELD(id, ' . $state->map(fn ($id) => "'{$id}'")->implode(',') . ')')
             ->get();
     }

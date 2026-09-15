@@ -10,6 +10,7 @@ use Spatie\Image\Image;
 use Wotz\MediaLibrary\Facades\Formats;
 use Wotz\MediaLibrary\Formats\Format;
 use Wotz\MediaLibrary\Models\Attachment;
+use Wotz\MediaLibrary\Support\Config;
 
 class FormatterModal extends Component
 {
@@ -24,7 +25,7 @@ class FormatterModal extends Component
     #[On('filament-media-library::open-formatter-attachment-modal')]
     public function setAttachment(string $uuid, ?array $formats = null)
     {
-        $this->attachment = Attachment::find($uuid);
+        $this->attachment = Config::attachmentModel()::find($uuid);
 
         $this->forcedMimeType = config(
             'filament-media-library.force-format-extension.mime-type',

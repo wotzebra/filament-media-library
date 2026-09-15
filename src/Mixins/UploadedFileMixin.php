@@ -10,6 +10,7 @@ use Wotz\MediaLibrary\Facades\Formats;
 use Wotz\MediaLibrary\Formats\Thumbnail;
 use Wotz\MediaLibrary\Jobs\GenerateAttachmentFormat;
 use Wotz\MediaLibrary\Models\Attachment;
+use Wotz\MediaLibrary\Support\Config;
 
 /**
  * @mixin TemporaryUploadedFile
@@ -43,7 +44,7 @@ class UploadedFileMixin
             ];
 
             /** @var Attachment $attachment */
-            $attachment = Attachment::firstOrCreate([
+            $attachment = Config::attachmentModel()::firstOrCreate([
                 'md5' => $data['md5'],
             ], $data);
 

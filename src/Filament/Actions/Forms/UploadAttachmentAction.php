@@ -8,6 +8,7 @@ use Filament\Schemas\Components\Utilities\Set;
 use Livewire\Component;
 use Wotz\MediaLibrary\Filament\Actions\Traits\CanUploadAttachment;
 use Wotz\MediaLibrary\Models\Attachment;
+use Wotz\MediaLibrary\Support\Config;
 
 class UploadAttachmentAction extends Action
 {
@@ -25,7 +26,7 @@ class UploadAttachmentAction extends Action
 
                 $attachmentIds = collect($data['attachments'] ?? [])
                     ->map(function (string $attachmentId) use ($data) {
-                        $attachment = Attachment::find($attachmentId);
+                        $attachment = Config::attachmentModel()::find($attachmentId);
 
                         if (! $attachment) {
                             return null;

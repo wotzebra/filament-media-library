@@ -5,6 +5,7 @@ namespace Wotz\MediaLibrary\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Wotz\MediaLibrary\Support\Config;
 
 /**
  * @property int $id
@@ -54,7 +55,7 @@ class AttachmentVersion extends Model
 
     public function attachment(): BelongsTo
     {
-        return $this->belongsTo(Attachment::class);
+        return $this->belongsTo(Config::attachmentModel());
     }
 
     public function getFilenameAttribute(): string
