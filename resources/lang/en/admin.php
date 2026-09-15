@@ -13,6 +13,7 @@ return [
     'height' => 'Height',
     'tags' => 'Tags',
     'image' => 'Image',
+    'preview unavailable' => 'Preview unavailable',
     'disk' => 'Disk',
     'format' => 'Format',
     'generate formats' => 'Generate formats',

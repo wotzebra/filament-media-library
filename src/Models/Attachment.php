@@ -26,6 +26,7 @@ use Wotz\MediaLibrary\Models\Traits\HasVersions;
  * @property int $size
  * @property string $extension
  * @property string $alt
+ * @property string $caption
  * @property string $translated_name
  * @property int|null $width
  * @property int|null $height
